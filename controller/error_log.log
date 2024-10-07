@@ -6,3 +6,33 @@
 [2024-10-06 15:24:21] Error [2]: Undefined array key "menu" in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\sub-menu-access.php on line 63
 [2024-10-06 15:24:23] Error [2]: Undefined array key "menu" in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\sub-menu-access.php on line 63
 [2024-10-06 15:24:23] Error [2]: Undefined array key "menu" in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\sub-menu-access.php on line 63
+[2024-10-07 12:07:55] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-status-produk.php on line 23
+[2024-10-07 12:22:00] Error [2]: Undefined variable $data_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-status-produk.php on line 38
+[2024-10-07 12:22:00] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-status-produk.php on line 38
+[2024-10-07 12:22:02] Error [2]: Undefined variable $data_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-status-produk.php on line 38
+[2024-10-07 12:22:02] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-status-produk.php on line 38
+[2024-10-07 12:26:40] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-kategori-produk.php on line 23
+[2024-10-07 13:04:32] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 37
+[2024-10-07 13:04:32] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 37
+[2024-10-07 13:04:32] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 38
+[2024-10-07 13:04:32] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 38
+[2024-10-07 13:04:32] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 43
+[2024-10-07 13:04:32] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 43
+[2024-10-07 13:04:32] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 54
+[2024-10-07 13:04:32] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 54
+[2024-10-07 13:05:10] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 42
+[2024-10-07 13:05:10] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 42
+[2024-10-07 13:05:10] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 43
+[2024-10-07 13:05:10] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 43
+[2024-10-07 13:05:10] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 48
+[2024-10-07 13:05:10] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 48
+[2024-10-07 13:05:10] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 59
+[2024-10-07 13:05:10] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 59
+[2024-10-07 13:05:12] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 42
+[2024-10-07 13:05:12] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 42
+[2024-10-07 13:05:12] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 43
+[2024-10-07 13:05:12] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 43
+[2024-10-07 13:05:12] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 48
+[2024-10-07 13:05:12] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 48
+[2024-10-07 13:05:12] Error [2]: Undefined variable $data_sub_menu in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 59
+[2024-10-07 13:05:12] Error [2]: Trying to access array offset on value of type null in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\produk\edit-list-produk.php on line 59

@@ -1063,10 +1063,10 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
           header("Location: menu");
           exit();
         }else{
-          $id_menu = valid($conn, $_GET["p"]); 
-          $menu = "SELECT * FROM user_menu WHERE id_menu = '.$petik.'$id_menu'.$petik.'";
-          $edit_menu = mysqli_query($conn, $menu);
-          $data_menu = mysqli_fetch_assoc($edit_menu);
+          $id = valid($conn, $_GET["p"]); 
+          $pull_data = "SELECT * FROM  WHERE  = '.$petik.'$id'.$petik.'";
+          $store_data = mysqli_query($conn, $pull_data);
+          $view_data = mysqli_fetch_assoc($store_data);
         $_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Ubah ' . $data['title'] . '";
         require_once("../../templates/views_top.php"); ?>
 
@@ -1080,7 +1080,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
               </div>
               <ul class="breadcrumb">
                 <li class="breadcrumb-item">' . $data['title'] . '</li>
-                <li class="breadcrumb-item"><?= $_SESSION["project_cv_aquila_indonesia"]["name_page"].'.$petik.' '.$petik.'.$data_menu["menu"]  ?></li>
+                <li class="breadcrumb-item"><?= $_SESSION["project_cv_aquila_indonesia"]["name_page"].'.$petik.' '.$petik.'.$view_data[""]  ?></li>
               </ul>
             </div>
           </div>
@@ -1158,6 +1158,112 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
 
     if ($action == "delete") {
       $sql = "DELETE FROM user_access_sub_menu WHERE id_access_sub_menu='$data[id_access_sub_menu]'";
+    }
+
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+  }
+
+  function status_produk($conn, $data, $action)
+  {
+    if ($action == "insert") {
+      $sql = "INSERT INTO status_produk (status_produk) VALUES ('$data[status_produk]')";
+    }
+
+    if ($action == "update") {
+      $sql = "UPDATE status_produk SET status_produk = '$data[status_produk]' WHERE id_status_produk = '$data[id_status_produk]'";
+    }
+
+    if ($action == "delete") {
+      $sql = "DELETE FROM status_produk WHERE id_status_produk = '$data[id_status_produk]'";
+    }
+
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+  }
+
+  function kategori_produk($conn, $data, $action)
+  {
+    if ($action == "insert") {
+      $sql = "INSERT INTO kategori_produk (kategori_produk) VALUES ('$data[kategori_produk]')";
+    }
+
+    if ($action == "update") {
+      $sql = "UPDATE kategori_produk SET kategori_produk = '$data[kategori_produk]' WHERE id_kategori_produk = '$data[id_kategori_produk]'";
+    }
+
+    if ($action == "delete") {
+      $sql = "DELETE FROM kategori_produk WHERE id_kategori_produk = '$data[id_kategori_produk]'";
+    }
+
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+  }
+
+  function produk($conn, $data, $action)
+  {
+    $path = "../../assets/img/produk/";
+
+    if ($action == "insert") {
+      if (!empty($_FILES['image']["name"])) {
+        $fileName = basename($_FILES["image"]["name"]);
+        $fileName = str_replace(" ", "-", $fileName);
+        $fileName_encrypt = crc32($fileName);
+        $ekstensiGambar = explode('.', $fileName);
+        $ekstensiGambar = strtolower(end($ekstensiGambar));
+        $imageUploadPath = $path . $fileName_encrypt . "." . $ekstensiGambar;
+        $fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
+        $allowTypes = array('jpg', 'png', 'jpeg');
+        if (in_array($fileType, $allowTypes)) {
+          $imageTemp = $_FILES["image"]["tmp_name"];
+          compressImage($imageTemp, $imageUploadPath, 75);
+          $image = $fileName_encrypt . "." . $ekstensiGambar;
+        } else {
+          $message = "Maaf, hanya file gambar JPG, JPEG, dan PNG yang diizinkan.";
+          $message_type = "danger";
+          alert($message, $message_type);
+          return false;
+        }
+      }else{
+        $image = "default.png";
+      }
+      $sql = "INSERT INTO produk (id_kategori_produk,id_status_produk,image_produk,nama_produk,jumlah_produk,harga,tgl_kadaluarsa) VALUES ('$data[id_kategori_produk]','$data[id_status_produk]','$image','$data[nama_produk]','$data[jumlah_produk]','$data[harga]','$data[tgl_kadaluarsa]')";
+    }
+
+    if ($action == "update") {
+      if (!empty($_FILES['image']["name"])) {
+        $fileName = basename($_FILES["image"]["name"]);
+        $fileName = str_replace(" ", "-", $fileName);
+        $fileName_encrypt = crc32($fileName);
+        $ekstensiGambar = explode('.', $fileName);
+        $ekstensiGambar = strtolower(end($ekstensiGambar));
+        $imageUploadPath = $path . $fileName_encrypt . "." . $ekstensiGambar;
+        $fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
+        $allowTypes = array('jpg', 'png', 'jpeg');
+        if (in_array($fileType, $allowTypes)) {
+          $imageTemp = $_FILES["image"]["tmp_name"];
+          compressImage($imageTemp, $imageUploadPath, 75);
+          $image = $fileName_encrypt . "." . $ekstensiGambar;
+          $remove_image = str_replace($path, "", $data['imageOld']);
+          if ($remove_image != "default.png") {
+            unlink($path . $remove_image);
+          }
+        } else {
+          $message = "Maaf, hanya file gambar JPG, JPEG, dan PNG yang diizinkan.";
+          $message_type = "danger";
+          alert($message, $message_type);
+          return false;
+        }
+      } else if (empty($_FILE['image']["name"])) {
+        $image = $data['imageOld'];
+      }
+      $sql = "UPDATE produk SET id_kategori_produk = '$data[id_kategori_produk]', id_status_produk = '$data[id_status_produk]', image_produk = '$image', nama_produk = '$data[nama_produk]', jumlah_produk = '$data[jumlah_produk]', harga = '$data[harga]', tgl_kadaluarsa = '$data[tgl_kadaluarsa]' WHERE id_produk = '$data[id_produk]'";
+    }
+
+    if ($action == "delete") {
+      $remove_image = str_replace($path, "", $data['image']);
+      unlink($path . $remove_image);
+      $sql = "DELETE FROM produk WHERE id_produk = '$data[id_produk]'";
     }
 
     mysqli_query($conn, $sql);

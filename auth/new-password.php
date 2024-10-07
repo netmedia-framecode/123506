@@ -55,7 +55,7 @@ if($data_auth['model']==1){?>
           </div>
           <div class="col-lg-6 bg-primary order-0 order-lg-1">
             <div class="h-100 d-flex align-items-center justify-content-center">
-              <img src="<?= $baseURL?>assets/img/auth/<?= $data_auth['image']?>" alt="" class="img-fluid">
+              <img src="<?= $baseURL?>assets/img/auth/<?= $data_auth['image']?>" alt="" class="img-fluid" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
           </div>
         </div>

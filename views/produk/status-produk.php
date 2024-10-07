@@ -41,6 +41,47 @@ require_once("../../templates/views_top.php"); ?>
 
   <!-- [ Main Content ] start -->
   <div class="main-content">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card stretch stretch-full">
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover" id="dataTable">
+                <thead>
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Status Produk</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($view_status_produk as $key => $data) { ?>
+                  <tr class="single-item">
+                    <td class="text-center"><?= $key + 1 ?></td>
+                    <td><?= $data['status_produk'] ?></td>
+                    <td>
+                      <div class="hstack gap-2 justify-content-center">
+                        <a href="edit-status-produk?p=<?= $data['id_status_produk']?>" class="btn btn-warning btn-sm">
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <form action="" method="post">
+                          <input type="hidden" name="id_status_produk" value="<?= $data['id_status_produk'] ?>">
+                          <input type="hidden" name="status_produk" value="<?= $data['status_produk'] ?>">
+                          <button type="submit" name="delete_status_produk" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- [ Main Content ] end -->
 
