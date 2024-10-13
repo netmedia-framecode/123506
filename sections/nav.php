@@ -72,6 +72,7 @@
   </div>
 </header>
 
+<?php if(isset($_SESSION["project_cv_aquila_indonesia"]["users"])){?>
 <div class="cartmini__area">
   <div class="modal fade" id="cartMiniModal" tabindex="-1" aria-labelledby="cartMiniModal" aria-hidden="true">
     <div class="modal-dialog">
@@ -112,3 +113,4 @@
     </div>
   </div>
 </div>
+<?php }?>

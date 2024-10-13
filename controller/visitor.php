@@ -3,6 +3,30 @@
 require_once("config/Base.php");
 require_once("config/Alert.php");
 
+if(isset($_GET['kp'])){
+  $id_kategori_produk = valid($conn, $_GET['kp']);
+  $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+    FROM produk
+    JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+    JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+    WHERE produk.id_kategori_produk = '$id_kategori_produk'
+    ORDER BY produk.id_produk DESC LIMIT 8
+  ";
+}else{
+  $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+    FROM produk
+    JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+    JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+    ORDER BY produk.id_produk DESC LIMIT 8
+  ";
+}
+$view_produk = mysqli_query($conn, $produk);
+$view_produk_1 = mysqli_query($conn, $produk);
+$view_produk_2 = mysqli_query($conn, $produk);
+
+$kategori_produk = "SELECT * FROM kategori_produk";
+$view_kategori_produk = mysqli_query($conn, $kategori_produk);
+
 if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
 
   require_once("config/Auth.php");
@@ -21,26 +45,6 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   ";
   $view_keranjang = mysqli_query($conn, $keranjang);
   
-  if(isset($_GET['kp'])){
-    $id_kategori_produk = valid($conn, $_GET['kp']);
-    $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
-      FROM produk
-      JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
-      JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
-      WHERE produk.id_kategori_produk = '$id_kategori_produk'
-      ORDER BY produk.id_produk DESC LIMIT 8
-    ";
-  }else{
-    $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
-      FROM produk
-      JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
-      JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
-      ORDER BY produk.id_produk DESC LIMIT 8
-    ";
-  }
-  $view_produk = mysqli_query($conn, $produk);
-  $view_produk_1 = mysqli_query($conn, $produk);
-  $view_produk_2 = mysqli_query($conn, $produk);
   if (isset($_POST["add_keranjang"])) {
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
@@ -69,9 +73,6 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       exit();
     }
   }
-
-  $kategori_produk = "SELECT * FROM kategori_produk";
-  $view_kategori_produk = mysqli_query($conn, $kategori_produk);
 
   if (isset($_POST["add_ulasan"])) {
     $validated_post = array_map(function ($value) use ($conn) {
