@@ -40,6 +40,16 @@ require_once("../templates/views_top.php"); ?>
                       <th scope="col"><?= $data['email'] ?></th>
                     </tr>
                     <tr>
+                      <th scope="col">No. Telp</th>
+                      <th scope="col" class="text-right">:</th>
+                      <th scope="col"><?= $data['tlpn'] ?></th>
+                    </tr>
+                    <tr>
+                      <th scope="col">Alamat</th>
+                      <th scope="col" class="text-right">:</th>
+                      <th scope="col"><?= $data['alamat'] ?></th>
+                    </tr>
+                    <tr>
                       <th scope="col">Status</th>
                       <th scope="col" class="text-right">:</th>
                       <th scope="col"><?= $data['status'] ?></th>

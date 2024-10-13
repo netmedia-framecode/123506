@@ -101,6 +101,23 @@ function hapusFolderRecursively($folderPath)
   }
 }
 
+function generateOrderID($length)
+{
+  $characters = '0123456789';
+  $idLength = $length;
+  $orderID = '';
+  for ($i = 0; $i < $idLength; $i++) {
+    $randomChar = $characters[rand(0, strlen($characters) - 1)];
+    $orderID .= $randomChar;
+  }
+  return $orderID;
+}
+
+function generateTokenTagihan($length)
+{
+  return bin2hex(random_bytes($length));
+}
+
 if (!isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   function register($conn, $data, $action)
   {
@@ -676,7 +693,9 @@ if (!isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
           "role" => $row["role"],
           "email" => $row["email"],
           "name" => $row["name"],
-          "image" => $row["image"]
+          "image" => $row["image"],
+          "tlpn" => $row["tlpn"],
+          "alamat" => $row["alamat"]
         ];
         return mysqli_affected_rows($conn);
       } else {
@@ -726,9 +745,9 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       }
       if (!empty($data['password'])) {
         $password = password_hash($data['password'], PASSWORD_DEFAULT);
-        $sql = "UPDATE users SET name='$data[name]', image='$image', password='$password' WHERE id_user='$id_user'";
+        $sql = "UPDATE users SET name='$data[name]', image='$image', password='$password', tlpn='$data[tlpn]', alamat='$data[alamat]' WHERE id_user='$id_user'";
       } else {
-        $sql = "UPDATE users SET name='$data[name]', image='$image' WHERE id_user='$id_user'";
+        $sql = "UPDATE users SET name='$data[name]', image='$image', tlpn='$data[tlpn]', alamat='$data[alamat]' WHERE id_user='$id_user'";
       }
     }
 
@@ -1200,6 +1219,61 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
+  function exportProduk($conn)
+  {
+    $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+      FROM produk
+      JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+      JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+    ";
+    $result = mysqli_query($conn, $query);
+    $spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $spreadsheet->getProperties()->setCreator('Creator')
+      ->setLastModifiedBy('Last Modified By')
+      ->setTitle('Data Produk')
+      ->setSubject('Data Produk')
+      ->setDescription('Data Produk')
+      ->setKeywords('Data Produk')
+      ->setCategory('Data');
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setCellValue('A1', 'No');
+    $sheet->setCellValue('B1', 'Nama Produk');
+    $sheet->setCellValue('C1', 'Kategori');
+    $sheet->setCellValue('D1', 'Status');
+    $sheet->setCellValue('E1', 'Deskripsi');
+    $sheet->setCellValue('F1', 'Jumlah');
+    $sheet->setCellValue('G1', 'Harga');
+    $sheet->setCellValue('H1', 'Total');
+    $sheet->setCellValue('I1', 'Tgl Kadaluarsa');
+    $row = 2;
+    $no = 1;
+    while ($row_data = mysqli_fetch_assoc($result)) {
+      $tgl_kadaluarsa = date_create($row_data["tgl_kadaluarsa"]);
+      $tgl_kadaluarsa = date_format($tgl_kadaluarsa, "d M Y");
+      $sheet->setCellValue('A' . $row, $no);
+      $sheet->setCellValue('B' . $row, $row_data['nama_produk']);
+      $sheet->setCellValue('C' . $row, $row_data['kategori_produk']);
+      $sheet->setCellValue('D' . $row, $row_data['status_produk']);
+      $sheet->setCellValue('E' . $row, $row_data['deskripsi']);
+      $sheet->setCellValue('F' . $row, $row_data['jumlah_produk']);
+      $sheet->setCellValue('G' . $row, "Rp.".number_format($row_data['harga']));
+      $sheet->setCellValue('H' . $row, "Rp.".number_format($row_data['harga']*$row_data['jumlah_produk']));
+      $sheet->setCellValue('I' . $row, $tgl_kadaluarsa);
+      $row++;
+      $no++;
+    }
+    foreach (range('A', 'I') as $column) {
+      $sheet->getColumnDimension($column)->setAutoSize(true);
+    }
+    $writer = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    $filename = 'data_produk.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+    $writer->save('php://output');
+    exit;
+  }
+
   function produk($conn, $data, $action)
   {
     $path = "../../assets/img/produk/";
@@ -1227,7 +1301,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       }else{
         $image = "default.png";
       }
-      $sql = "INSERT INTO produk (id_kategori_produk,id_status_produk,image_produk,nama_produk,jumlah_produk,harga,tgl_kadaluarsa) VALUES ('$data[id_kategori_produk]','$data[id_status_produk]','$image','$data[nama_produk]','$data[jumlah_produk]','$data[harga]','$data[tgl_kadaluarsa]')";
+      $sql = "INSERT INTO produk (id_kategori_produk,id_status_produk,image_produk,nama_produk,deskripsi,jumlah_produk,harga,tgl_kadaluarsa) VALUES ('$data[id_kategori_produk]','$data[id_status_produk]','$image','$data[nama_produk]','$data[deskripsi]','$data[jumlah_produk]','$data[harga]','$data[tgl_kadaluarsa]')";
     }
 
     if ($action == "update") {
@@ -1257,13 +1331,200 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       } else if (empty($_FILE['image']["name"])) {
         $image = $data['imageOld'];
       }
-      $sql = "UPDATE produk SET id_kategori_produk = '$data[id_kategori_produk]', id_status_produk = '$data[id_status_produk]', image_produk = '$image', nama_produk = '$data[nama_produk]', jumlah_produk = '$data[jumlah_produk]', harga = '$data[harga]', tgl_kadaluarsa = '$data[tgl_kadaluarsa]' WHERE id_produk = '$data[id_produk]'";
+      $sql = "UPDATE produk SET id_kategori_produk = '$data[id_kategori_produk]', id_status_produk = '$data[id_status_produk]', image_produk = '$image', nama_produk = '$data[nama_produk]', deskripsi = '$data[deskripsi]', jumlah_produk = '$data[jumlah_produk]', harga = '$data[harga]', tgl_kadaluarsa = '$data[tgl_kadaluarsa]' WHERE id_produk = '$data[id_produk]'";
     }
 
     if ($action == "delete") {
       $remove_image = str_replace($path, "", $data['image']);
       unlink($path . $remove_image);
       $sql = "DELETE FROM produk WHERE id_produk = '$data[id_produk]'";
+    }
+
+    if ($action == "export") {
+      exportProduk($conn);
+    }
+
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+  }
+
+  function keranjang($conn, $data, $action, $id_user)
+  {
+    if ($action == "insert") {
+      $sql = "INSERT INTO keranjang (id_user,id_produk,jumlah_keranjang) VALUES ('$id_user','$data[id_produk]','$data[jumlah_keranjang]')";
+    }
+
+    if ($action == "delete") {
+      $sql = "DELETE FROM keranjang WHERE id_keranjang = '$data[id_keranjang]'";
+    }
+
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+  }
+
+  function wishlist($conn, $data, $action, $id_user)
+  {
+    if ($action == "insert") {
+      $sql = "INSERT INTO wishlist (id_user,id_produk) VALUES ('$id_user','$data[id_produk]')";
+    }
+
+    if ($action == "delete") {
+      $sql = "DELETE FROM wishlist WHERE id_wishlist = '$data[id_wishlist]'";
+    }
+
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+  }
+
+  function tagihan($conn, $data, $action, $id_user)
+  {
+    if ($action == "insert") {
+      $order_id = generateOrderID(6);
+      $token = generateTokenTagihan(12);
+      $id_keranjang_all_array = isset($data['id_keranjang_all']) && is_array($data['id_keranjang_all']) ? $data['id_keranjang_all'] : [];
+      $id_produk_array = isset($data['id_produk']) && is_array($data['id_produk']) ? $data['id_produk'] : [];
+      $jumlah_keranjang_array = isset($data['jumlah_keranjang']) && is_array($data['jumlah_keranjang']) ? $data['jumlah_keranjang'] : [];
+      $harga_array = isset($data['harga']) && is_array($data['harga']) ? $data['harga'] : [];
+      if (count($id_produk_array) == count($jumlah_keranjang_array) && count($jumlah_keranjang_array) == count($harga_array)) {
+        for ($i = 0; $i < count($id_produk_array); $i++) {
+          $id_keranjang_all = $id_keranjang_all_array[$i];
+          $id_produk = $id_produk_array[$i];
+          $jumlah_keranjang = $jumlah_keranjang_array[$i];
+          $harga = $harga_array[$i];
+          $sql_pembelian = "INSERT INTO pembelian (id_user, id_produk, order_id, token, jumlah_produk, harga_satuan) 
+                  VALUES ('$id_user', '$id_produk', '$order_id', '$token', '$jumlah_keranjang', '$harga')";
+          mysqli_query($conn, $sql_pembelian);
+          if ($id_keranjang_all !== 0) {
+            $sql_keranjang = "DELETE FROM keranjang WHERE id_keranjang = '$id_keranjang_all'";
+            mysqli_query($conn, $sql_keranjang);
+          }
+        }
+      }
+    }
+
+    if ($action == "update") {
+      $sql = "UPDATE pembelian SET catatan = '$data[catatan]' WHERE id_pembelian = '$data[id_pembelian]'";
+      mysqli_query($conn, $sql);
+    }
+
+    if ($action == "delete") {
+      $sql = "DELETE FROM pembelian WHERE id_pembelian = '$data[id_pembelian]'";
+      mysqli_query($conn, $sql);
+    }
+
+    return mysqli_affected_rows($conn);
+  }
+
+  function exportPembelian($conn)
+  {
+    $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
+      FROM pembelian
+      JOIN users ON pembelian.id_user = users.id_user
+      JOIN produk ON pembelian.id_produk = produk.id_produk
+      JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+      JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
+      WHERE pembelian.id_status_pembelian = '1'
+    ";
+    $result = mysqli_query($conn, $query);
+    $spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $spreadsheet->getProperties()->setCreator('Creator')
+      ->setLastModifiedBy('Last Modified By')
+      ->setTitle('Data Pembelian')
+      ->setSubject('Data Pembelian')
+      ->setDescription('Data Pembelian')
+      ->setKeywords('Data Pembelian')
+      ->setCategory('Data');
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setCellValue('A1', 'No');
+    $sheet->setCellValue('B1', 'Order ID');
+    $sheet->setCellValue('C1', 'Nama Pembeli');
+    $sheet->setCellValue('D1', 'Email / Tlpn');
+    $sheet->setCellValue('E1', 'Alamat');
+    $sheet->setCellValue('F1', 'Nama Produk');
+    $sheet->setCellValue('G1', 'Kategori');
+    $sheet->setCellValue('H1', 'Jumlah Beli');
+    $sheet->setCellValue('I1', 'Harga');
+    $sheet->setCellValue('J1', 'Total');
+    $sheet->setCellValue('K1', 'Status Bayar');
+    $sheet->setCellValue('L1', 'Catatan');
+    $sheet->setCellValue('M1', 'Tgl Tagihan');
+    $sheet->setCellValue('N1', 'Tgl Pembayaran');
+    $row = 2;
+    $no = 1;
+    while ($row_data = mysqli_fetch_assoc($result)) {
+      $tanggal_tagihan = date_create($row_data["tanggal_tagihan"]);
+      $tanggal_tagihan = date_format($tanggal_tagihan, "d M Y");
+      $tanggal_pembayaran = date_create($row_data["tanggal_pembayaran"]);
+      $tanggal_pembayaran = date_format($tanggal_pembayaran, "d M Y");
+      $sheet->setCellValue('A' . $row, $no);
+      $sheet->setCellValue('B' . $row, "#".$row_data['order_id']);
+      $sheet->setCellValue('C' . $row, $row_data['name']);
+      if(empty($row_data['tlpn'])){
+        $sheet->setCellValue('D' . $row, $row_data['email']);
+      }else{
+        $sheet->setCellValue('D' . $row, $row_data['email']." / ".$row_data['tlpn']);
+      }
+      $sheet->setCellValue('E' . $row, $row_data['alamat']);
+      $sheet->setCellValue('F' . $row, $row_data['nama_produk']);
+      $sheet->setCellValue('G' . $row, $row_data['kategori_produk']);
+      $sheet->setCellValue('H' . $row, $row_data['jumlah_produk']);
+      $sheet->setCellValue('I' . $row, "Rp.".number_format($row_data['harga_satuan']));
+      $sheet->setCellValue('J' . $row, "Rp.".number_format($row_data['total_harga']));
+      $sheet->setCellValue('K' . $row, $row_data['status_pembelian']);
+      $sheet->setCellValue('L' . $row, $row_data['catatan']);
+      $sheet->setCellValue('M' . $row, $tanggal_tagihan);
+      $sheet->setCellValue('N' . $row, $tanggal_pembayaran);
+      $row++;
+      $no++;
+    }
+    foreach (range('A', 'N') as $column) {
+      $sheet->getColumnDimension($column)->setAutoSize(true);
+    }
+    $writer = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    $filename = 'data_pembelian.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+    $writer->save('php://output');
+    exit;
+  }
+
+  function pembelian($conn, $data, $action)
+  {
+    if ($action == "export") {
+      exportPembelian($conn);
+    }
+
+    // mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+  }
+
+  function chat($conn, $data, $action, $id_user)
+  {
+    if ($action == "insert") {
+      $sql = "INSERT INTO chat (id_user, start) VALUES ('$id_user','$data[message]')";
+    }
+
+    if ($action == "update") {
+      $chat = "SELECT id_user, reply FROM chat WHERE id_user='$data[id_user]' ORDER BY id_chat DESC LIMIT 1";
+      $view_chat = mysqli_query($conn, $chat);
+      $data_chat = mysqli_fetch_assoc($view_chat);
+      $reply = $data_chat['reply'];
+      if(empty($reply)){
+        $sql = "UPDATE chat SET reply = '$data[message]' WHERE id_user = '$data[id_user]' ORDER BY id_chat DESC LIMIT 1";
+      }else{
+        $sql = "INSERT INTO insert (id_user,reply) VALUES ('$data[id_user]','$data[message]')";
+      }
+    }
+
+    mysqli_query($conn, $sql);
+    return mysqli_affected_rows($conn);
+  }
+
+  function ulasan($conn, $data, $action, $id_user)
+  {
+    if ($action == "insert") {
+      $sql = "INSERT INTO ulasan (id_user,id_produk,rating,ulasan) VALUES ('$id_user','$data[id_produk]','$data[rating]','$data[ulasan]')";
     }
 
     mysqli_query($conn, $sql);

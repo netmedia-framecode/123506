@@ -22,6 +22,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     $email = valid($conn, $_SESSION["project_cv_aquila_indonesia"]["users"]["email"]);
     $name = valid($conn, $_SESSION["project_cv_aquila_indonesia"]["users"]["name"]);
     $image = valid($conn, $_SESSION["project_cv_aquila_indonesia"]["users"]["image"]);
+    $tlpn = valid($conn, $_SESSION["project_cv_aquila_indonesia"]["users"]["tlpn"]);
+    $alamat = valid($conn, $_SESSION["project_cv_aquila_indonesia"]["users"]["alamat"]);
 
     $_SESSION["project_cv_aquila_indonesia"]["users"] = [
       "id" => $id_user,
@@ -30,6 +32,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       "email" => $email,
       "name" => $name,
       "image" => $image,
+      "tlpn" => $tlpn,
+      "alamat" => $alamat,
       "message_$message_type" => $message,
       "time_message" => time()
     ];

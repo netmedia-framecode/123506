@@ -73,6 +73,10 @@ require_once("../../templates/views_top.php"); ?>
                   required>
               </div>
               <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi</label>
+                <textarea class="form-control" name="deskripsi" id="deskripsi" rows="3"><?= $view_data['deskripsi']?></textarea>
+              </div>
+              <div class="mb-3">
                 <label for="jumlah_produk" class="form-label">Jumlah Produk</label>
                 <input type="number" name="jumlah_produk" value="<?= $view_data['jumlah_produk']?>" class="form-control" id="jumlah_produk"
                   placeholder="Jumlah Produk" required>

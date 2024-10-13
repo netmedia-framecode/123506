@@ -53,6 +53,7 @@ require_once("../../templates/views_top.php"); ?>
                     <th class="text-center">Produk</th>
                     <th class="text-center">Kategori</th>
                     <th class="text-center">Status</th>
+                    <th class="text-center" style="width: 200px;">Deskripsi</th>
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Harga</th>
                     <th class="text-center">Total</th>
@@ -70,12 +71,15 @@ require_once("../../templates/views_top.php"); ?>
                           <img src="../../assets/img/produk/<?= $data['image_produk']?>" alt="" class="img-fluid">
                         </div>
                         <div>
-                          <p class="text-truncate-1-line"><?= $data['nama_produk']?></p>
+                          <p class="text-truncate-3-line" style="width: 100px;"><?= $data['nama_produk']?></p>
                         </div>
                       </div>
                     </td>
                     <td><?= $data['kategori_produk'] ?></td>
                     <td><?= $data['status_produk'] ?></td>
+                    <td>
+                      <p class="text-truncate-3-line" style="width: 200px;"><?= $data['deskripsi']?></p>
+                    </td>
                     <td><?= $data['jumlah_produk'] ?></td>
                     <td>Rp.<?= number_format($data['harga']) ?> / pcs</td>
                     <td>Rp.<?= number_format($data['harga']*$data['jumlah_produk']) ?></td>

@@ -20,7 +20,8 @@ require_once("../../templates/views_top.php"); ?>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item">Kategori Produk</li>
-        <li class="breadcrumb-item"><?= $_SESSION["project_cv_aquila_indonesia"]["name_page"].' '.$view_data["kategori_produk"]  ?>
+        <li class="breadcrumb-item">
+          <?= $_SESSION["project_cv_aquila_indonesia"]["name_page"].' '.$view_data["kategori_produk"]  ?>
         </li>
       </ul>
     </div>
@@ -32,19 +33,20 @@ require_once("../../templates/views_top.php"); ?>
     <div class="row">
       <div class="col-lg-6">
         <div class="card stretch stretch-full">
-          <fo class="card-body">
+          <div class="card-body">
             <form action="" method="post">
               <input type="hidden" name="id_kategori_produk" value="<?= $view_data['id_kategori_produk'] ?>">
               <div class="mb-3">
                 <label for="kategori_produk" class="form-label">Kategori Produk</label>
-                <input type="text" name="kategori_produk" value="<?= $view_data['kategori_produk']?>" class="form-control"
-                  id="kategori_produk" placeholder="Kategori Produk" required>
+                <input type="text" name="kategori_produk" value="<?= $view_data['kategori_produk']?>"
+                  class="form-control" id="kategori_produk" placeholder="Kategori Produk" required>
               </div>
               <div class="mb-3 hstack gap-2 justify-content-left">
                 <a href="kategori-produk" class="btn btn-success">Kembali</a>
                 <button type="submit" name="edit_kategori_produk" class="btn btn-warning">Ubah</button>
               </div>
             </form>
+          </div>
         </div>
       </div>
     </div>

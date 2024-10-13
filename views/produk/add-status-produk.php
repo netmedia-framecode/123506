@@ -23,17 +23,19 @@ require_once("../../templates/views_top.php"); ?>
     <div class="row">
       <div class="col-lg-6">
         <div class="card stretch stretch-full">
-          <fo class="card-body">
+          <div class="card-body">
             <form action="" method="post">
               <div class="mb-3">
                 <label for="status_produk" class="form-label">Status Produk</label>
-                <input type="text" name="status_produk" class="form-control" id="status_produk" placeholder="Status Produk" required>
+                <input type="text" name="status_produk" class="form-control" id="status_produk"
+                  placeholder="Status Produk" required>
               </div>
               <div class="mb-3 hstack gap-2 justify-content-left">
                 <a href="status-produk" class="btn btn-success">Kembali</a>
                 <button type="submit" name="add_status_produk" class="btn btn-primary">Tambah</button>
               </div>
             </form>
+          </div>
         </div>
       </div>
     </div>

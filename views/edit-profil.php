@@ -42,11 +42,19 @@ require_once("../templates/views_top.php"); ?>
                   </div>
                   <div class="mb-3">
                     <label for="password" class="form-label">Password baru <small>(Optional)</small></label>
-                    <input type="text" name="password" class="form-control" id="password" minlength="8" required>
+                    <input type="text" name="password" class="form-control" id="password" minlength="8">
                   </div>
                   <div class="mb-3">
                     <label for="formFile" class="form-label">Foto profil <small>(Optional)</small></label>
                     <input class="form-control" name="image" type="file" id="formFile" accept="image/*">
+                  </div>
+                  <div class="mb-3">
+                    <label for="tlpn" class="form-label">No. Telp</label>
+                    <input type="number" name="tlpn" value="<?= $data['tlpn'] ?>" class="form-control" id="tlpn" maxlength="12" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat</label>
+                    <input type="text" name="alamat" value="<?= $data['alamat'] ?>" class="form-control" id="alamat" required>
                   </div>
                   <div class="mb-3">
                     <button type="submit" name="edit_profil" class="btn btn-warning">

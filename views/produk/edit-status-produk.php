@@ -33,7 +33,7 @@ require_once("../../templates/views_top.php"); ?>
     <div class="row">
       <div class="col-lg-6">
         <div class="card stretch stretch-full">
-          <fo class="card-body">
+          <div class="card-body">
             <form action="" method="post">
               <input type="hidden" name="id_status_produk" value="<?= $view_data['id_status_produk'] ?>">
               <div class="mb-3">
@@ -46,6 +46,7 @@ require_once("../../templates/views_top.php"); ?>
                 <button type="submit" name="edit_status_produk" class="btn btn-warning">Ubah</button>
               </div>
             </form>
+          </div>
         </div>
       </div>
     </div>

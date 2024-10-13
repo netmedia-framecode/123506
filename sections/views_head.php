@@ -23,3 +23,4 @@
 <link rel="stylesheet" type="text/css" href="<?= $baseURL ?>assets/css/theme.min.css" />
 <link rel="stylesheet" type="text/css" href="<?= $baseURL ?>assets/vendor/datatables/dataTables.bootstrap4.min.css">
 <script src="<?= $baseURL ?>assets/sweetalert/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
