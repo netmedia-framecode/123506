@@ -24,12 +24,10 @@ require_once("../../templates/views_top.php"); ?>
           </a>
         </div>
         <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-          <form action="" method="post">
-            <button type="submit" name="export_produk" class="btn btn-primary">
-              <i class="bi bi-file-earmark-ruled me-2"></i>
-              <span>Export</span>
-            </button>
-          </form>
+          <a href="export-produk" class="btn btn-primary">
+            <i class="bi bi-file-earmark-ruled me-2"></i>
+            <span>Export</span>
+          </a>
         </div>
       </div>
       <div class="d-md-none d-flex align-items-center">

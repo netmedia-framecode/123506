@@ -81,7 +81,8 @@ require_once("templates/top.php"); ?>
               </div>
             </div>
             <div class="product-content">
-              <h4 class="pro-title pro-title-1"><?= $data['nama_produk']?></h4>
+              <h4 class="pro-title pro-title-1"><a
+                  href="produk-detail?p=<?= $data['id_produk']?>"><?= $data['nama_produk']?></a></h4>
               <div class="pro-price">
                 <span>Rp.<?= number_format($data['harga'])?></span>
               </div>
@@ -130,7 +131,21 @@ require_once("templates/top.php"); ?>
         <div class="col-xxl-6 col-lg-6 col-md-6 ps-0">
           <div class="single-banner single-banner-2 p-rel fix mb-30 mb-md-0 wow">
             <div class="thumb">
-              <img src="assets/ui/img/banner/banner-3.jpg" class=" wow fadeInRight h-100" data-wow-delay=".10s" alt="#">
+              <?php
+              $kategoriGambar = [
+                  "makanan" => "assets/img/makanan.jpg",
+                  "minuman" => "assets/img/minuman.jpg",
+              ];
+              $gambar = "assets/img/default.jpeg";
+              foreach ($kategoriGambar as $key => $imgPath) {
+                  if (stripos($data['kategori_produk'], $key) !== false) {
+                      $gambar = $imgPath;
+                      break;
+                  }
+              }
+              ?>
+              <img src="<?= $gambar ?>" class="wow fadeInRight h-100" data-wow-delay=".10s"
+                alt="<?= htmlspecialchars($data['kategori_produk']) ?>">
             </div>
             <div class="banner-content banner-content-2 wow fadeInLeft" data-wow-delay=".10s">
               <h4><a href="produk?kp=<?= $data['id_kategori_produk'] ?>"><?= $data['kategori_produk']?></a></h4>

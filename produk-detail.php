@@ -143,6 +143,13 @@ if(!isset($_GET['p'])){
                 </li>
                 <li>
                   <div class="product-sku">
+                    <span>Expired:</span>
+                    <p><?php $date = date_create($data["tgl_kadaluarsa"]);
+                    echo date_format($date, "M Y"); ?></p>
+                  </div>
+                </li>
+                <li>
+                  <div class="product-sku">
                     <span>Tags:</span>
                     <p>Khas NTT, Makanan, Minuman, Herbal</p>
                   </div>

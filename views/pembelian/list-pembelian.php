@@ -42,7 +42,9 @@ require_once("../../templates/views_top.php"); ?>
                     <th class="text-center">Catatan</th>
                     <th class="text-center">Tgl Tagihan</th>
                     <th class="text-center">Tgl Pembayaran</th>
+                    <?php if($id_role == 3){?>
                     <th class="text-center">Aksi</th>
+                    <?php }?>
                   </tr>
                 </thead>
                 <tbody>
@@ -105,6 +107,7 @@ require_once("../../templates/views_top.php"); ?>
                         }
                        ?>
                     </td>
+                    <?php if($id_role == 3){?>
                     <td>
                       <div class="hstack gap-2 justify-content-center">
                         <a href="ulasan?p=<?= $data['id_pembelian']?>" class="btn btn-success btn-sm">
@@ -112,6 +115,7 @@ require_once("../../templates/views_top.php"); ?>
                         </a>
                       </div>
                     </td>
+                    <?php } ?>
                   </tr>
                   <?php } ?>
                 </tbody>

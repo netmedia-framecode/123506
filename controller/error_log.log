@@ -152,3 +152,4 @@
 [2024-10-13 07:26:57] Error [2]: Undefined array key "tanggal_tagihan" in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\index.php on line 462
 [2024-10-13 07:26:57] Error [8192]: date_create(): Passing null to parameter #1 ($datetime) of type string is deprecated in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\index.php on line 462
 [2024-10-13 07:26:57] Error [2]: Undefined array key "id_pembelian" in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\index.php on line 476
+[2024-12-01 07:01:06] Error [2]: Undefined variable $view_data in D:\laragon\www\apps\tugas\cv_aquila_indonesia\views\laporan\export-produk.php on line 16

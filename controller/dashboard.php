@@ -40,10 +40,10 @@ $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.statu
 ";
 $view_produk = mysqli_query($conn, $produk);
 if (isset($_POST["add_wishlist"])) {
-  $validated_post = array_map(function ($value) use ($conn) {
-    return valid($conn, $value);
-  }, $_POST);
-  if (wishlist($conn, $validated_post, $action = 'insert', $id_user) > 0) {
+  // $validated_post = array_map(function ($value) use ($conn) {
+  //   return valid($conn, $value);
+  // }, $_POST);
+  if (wishlist($conn, $_POST, $action = 'insert', $id_user) > 0) {
     $message = "Produk ditambahkan ke kerangjang anda.";
     $message_type = "success";
     alert($message, $message_type);
@@ -52,10 +52,10 @@ if (isset($_POST["add_wishlist"])) {
   }
 }
 if (isset($_POST["add_keranjang"])) {
-  $validated_post = array_map(function ($value) use ($conn) {
-    return valid($conn, $value);
-  }, $_POST);
-  if (keranjang($conn, $validated_post, $action = 'insert', $id_user) > 0) {
+  // $validated_post = array_map(function ($value) use ($conn) {
+  //   return valid($conn, $value);
+  // }, $_POST);
+  if (keranjang($conn, $_POST, $action = 'insert', $id_user) > 0) {
     $message = "Produk ditambahkan ke kerangjang anda.";
     $message_type = "success";
     alert($message, $message_type);

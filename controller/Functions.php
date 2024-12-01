@@ -1219,13 +1219,21 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
-  function exportProduk($conn)
+  function exportProduk($conn, $bulan)
   {
-    $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
-      FROM produk
-      JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
-      JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
-    ";
+    if (!empty($bulan)) {
+      $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+                FROM produk
+                JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+                JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+                WHERE DATE_FORMAT(produk.updated_at, '%m') = '$bulan'";
+    } else {
+      $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+        FROM produk
+        JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+        JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+      ";
+    }
     $result = mysqli_query($conn, $query);
     $spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
     $spreadsheet->getProperties()->setCreator('Creator')
@@ -1341,7 +1349,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     }
 
     if ($action == "export") {
-      exportProduk($conn);
+      $bulan = $data['bulan'];
+      exportProduk($conn, $bulan);
     }
 
     mysqli_query($conn, $sql);
@@ -1351,28 +1360,47 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   function keranjang($conn, $data, $action, $id_user)
   {
     if ($action == "insert") {
-      $sql = "INSERT INTO keranjang (id_user,id_produk,jumlah_keranjang) VALUES ('$id_user','$data[id_produk]','$data[jumlah_keranjang]')";
+      $id_produk_array = isset($data['id_produk']) && is_array($data['id_produk']) ? $data['id_produk'] : [];
+      $jumlah_keranjang_array = isset($data['jumlah_keranjang']) && is_array($data['jumlah_keranjang']) ? $data['jumlah_keranjang'] : [];
+      $harga_array = isset($data['harga']) && is_array($data['harga']) ? $data['harga'] : [];
+      if (count($id_produk_array) == count($jumlah_keranjang_array) && count($jumlah_keranjang_array) == count($harga_array)) {
+        for ($i = 0; $i < count($id_produk_array); $i++) {
+          $id_produk = $id_produk_array[$i];
+          $jumlah_keranjang = $jumlah_keranjang_array[$i];
+          $sql_insert = "INSERT INTO keranjang (id_user,id_produk,jumlah_keranjang) VALUES ('$id_user','$id_produk','$jumlah_keranjang')";
+          mysqli_query($conn, $sql_insert);
+        }
+      }
     }
 
     if ($action == "delete") {
-      $sql = "DELETE FROM keranjang WHERE id_keranjang = '$data[id_keranjang]'";
+      $sql_delete = "DELETE FROM keranjang WHERE id_keranjang = '$data[id_keranjang]'";
+      mysqli_query($conn, $sql_delete);
     }
 
-    mysqli_query($conn, $sql);
     return mysqli_affected_rows($conn);
   }
 
   function wishlist($conn, $data, $action, $id_user)
   {
     if ($action == "insert") {
-      $sql = "INSERT INTO wishlist (id_user,id_produk) VALUES ('$id_user','$data[id_produk]')";
+      $id_produk_array = isset($data['id_produk']) && is_array($data['id_produk']) ? $data['id_produk'] : [];
+      $jumlah_keranjang_array = isset($data['jumlah_keranjang']) && is_array($data['jumlah_keranjang']) ? $data['jumlah_keranjang'] : [];
+      $harga_array = isset($data['harga']) && is_array($data['harga']) ? $data['harga'] : [];
+      if (count($id_produk_array) == count($jumlah_keranjang_array) && count($jumlah_keranjang_array) == count($harga_array)) {
+        for ($i = 0; $i < count($id_produk_array); $i++) {
+          $id_produk = $id_produk_array[$i];
+          $sql_insert = "INSERT INTO wishlist (id_user,id_produk) VALUES ('$id_user','$id_produk')";
+          mysqli_query($conn, $sql_insert);
+        }
+      }
     }
 
     if ($action == "delete") {
-      $sql = "DELETE FROM wishlist WHERE id_wishlist = '$data[id_wishlist]'";
+      $sql_delete = "DELETE FROM wishlist WHERE id_wishlist = '$data[id_wishlist]'";
+      mysqli_query($conn, $sql_delete);
     }
 
-    mysqli_query($conn, $sql);
     return mysqli_affected_rows($conn);
   }
 
@@ -1391,13 +1419,13 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
           $id_produk = $id_produk_array[$i];
           $jumlah_keranjang = $jumlah_keranjang_array[$i];
           $harga = $harga_array[$i];
-          $sql_pembelian = "INSERT INTO pembelian (id_user, id_produk, order_id, token, jumlah_produk, harga_satuan) 
-                  VALUES ('$id_user', '$id_produk', '$order_id', '$token', '$jumlah_keranjang', '$harga')";
-          mysqli_query($conn, $sql_pembelian);
           if ($id_keranjang_all !== 0) {
             $sql_keranjang = "DELETE FROM keranjang WHERE id_keranjang = '$id_keranjang_all'";
             mysqli_query($conn, $sql_keranjang);
           }
+          $sql_pembelian = "INSERT INTO pembelian (id_user, id_produk, order_id, token, jumlah_produk, harga_satuan) 
+                  VALUES ('$id_user', '$id_produk', '$order_id', '$token', '$jumlah_keranjang', '$harga')";
+          mysqli_query($conn, $sql_pembelian);
         }
       }
     }
@@ -1415,16 +1443,28 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
-  function exportPembelian($conn)
+  function exportPembelian($conn, $bulan)
   {
-    $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
-      FROM pembelian
-      JOIN users ON pembelian.id_user = users.id_user
-      JOIN produk ON pembelian.id_produk = produk.id_produk
-      JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
-      JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
-      WHERE pembelian.id_status_pembelian = '1'
-    ";
+    if (!empty($bulan)) {
+      $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
+        FROM pembelian
+        JOIN users ON pembelian.id_user = users.id_user
+        JOIN produk ON pembelian.id_produk = produk.id_produk
+        JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+        JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
+        WHERE pembelian.id_status_pembelian = '1'
+        AND DATE_FORMAT(pembelian.updated_at, '%m') = '$bulan'
+      ";
+    }else{
+      $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
+        FROM pembelian
+        JOIN users ON pembelian.id_user = users.id_user
+        JOIN produk ON pembelian.id_produk = produk.id_produk
+        JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+        JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
+        WHERE pembelian.id_status_pembelian = '1'
+      ";
+    }
     $result = mysqli_query($conn, $query);
     $spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
     $spreadsheet->getProperties()->setCreator('Creator')
@@ -1492,7 +1532,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   function pembelian($conn, $data, $action)
   {
     if ($action == "export") {
-      exportPembelian($conn);
+      $bulan = $data['bulan'];
+      exportPembelian($conn, $bulan);
     }
 
     // mysqli_query($conn, $sql);

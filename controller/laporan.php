@@ -19,7 +19,7 @@
       $message = "Produk berhasil di export.";
       $message_type = "success";
       alert($message, $message_type);
-      header("Location: produk");
+      header("Location: export-produk");
       exit();
     }
   }
@@ -33,7 +33,7 @@
     WHERE pembelian.id_status_pembelian = '1'
   ";
   $view_pembelian = mysqli_query($conn, $pembelian);
-  if (isset($_POST["export_pembelian"])) {
+  if (isset($_POST["export_pendapatan"])) {
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
     }, $_POST);
@@ -41,7 +41,7 @@
       $message = "Pembelian berhasil di export.";
       $message_type = "success";
       alert($message, $message_type);
-      header("Location: pembelian");
+      header("Location: export-pendapatan");
       exit();
     }
   }
