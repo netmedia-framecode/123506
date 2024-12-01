@@ -121,6 +121,8 @@ require_once("../../templates/views_top.php"); ?>
               <h5 class="card-title"><?= $data['nama_produk']?></h5>
               <h4 class="card-text">Rp. <?= number_format($data['harga'])?></h4>
               <p class="card-text"><i class="bi bi-geo-fill"></i> Kota Kupang</p>
+              <p class="card-text" style="margin-top: -10px;">Expired <?php $date = date_create($data["tgl_kadaluarsa"]);
+                    echo date_format($date, "M Y"); ?></p>
               <p class="card-text" style="margin-top: -10px;">Stok Total: <?= $data['jumlah_produk']." | "?> <?php $id_produk = $data['id_produk'];
                 $pembelian = "SELECT SUM(jumlah_produk) AS total_pembelian FROM pembelian WHERE id_produk='$id_produk'";
                 $view_pembelian = mysqli_query($conn, $pembelian);

@@ -1,5 +1,5 @@
 <?php require_once("../../controller/laporan.php");
-$_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Export Produk";
+$_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Print Produk";
 require_once("../../templates/views_top.php"); ?>
 
 <div class="nxl-content">
@@ -56,7 +56,7 @@ require_once("../../templates/views_top.php"); ?>
               </div>
               <div class="mb-3 hstack gap-2 justify-content-left">
                 <a href="produk" class="btn btn-success">Kembali</a>
-                <button type="submit" name="export_produk" class="btn btn-primary">Export</button>
+                <button type="submit" name="print_produk" class="btn btn-primary">Print</button>
               </div>
             </form>
 

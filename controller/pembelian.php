@@ -44,7 +44,7 @@
     }
   }
 
-  $wishlist = "SELECT wishlist.*, produk.image_produk, produk.nama_produk, produk.jumlah_produk, produk.harga 
+  $wishlist = "SELECT wishlist.*, produk.image_produk, produk.nama_produk, produk.jumlah_produk, produk.harga, produk.tgl_kadaluarsa 
     FROM wishlist
     JOIN produk ON wishlist.id_produk = produk.id_produk
     WHERE wishlist.id_user = '$id_user'

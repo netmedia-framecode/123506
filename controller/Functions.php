@@ -1219,6 +1219,65 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
+  function printProduk($conn, $bulan)
+  {
+    $bulan_array = [
+      '01' => 'JANUARI', '02' => 'FEBRUARI', '03' => 'MARET',
+      '04' => 'APRIL', '05' => 'MEI', '06' => 'JUNI',
+      '07' => 'JULI', '08' => 'AGUSTUS', '09' => 'SEPTEMBER',
+      '10' => 'OKTOBER', '11' => 'NOVEMBER', '12' => 'DESEMBER'
+    ];
+    if (!empty($bulan)) {
+      $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+                FROM produk
+                JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+                JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+                WHERE DATE_FORMAT(produk.updated_at, '%m') = '$bulan'";
+      $bulan_text = "BULAN ".$bulan_array[$bulan] ?? "";
+    } else {
+      $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+        FROM produk
+        JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+        JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+      ";
+      $bulan_text = "";
+    }
+    $result = mysqli_query($conn, $query);
+    $mpdf = new \Mpdf\Mpdf();
+    $html = '<h1 style="text-align: center;">LAPORAN PRODUK CV. AQUILA INDONESIA KUPANG '.$bulan_text.'</h1>';
+    $html .= '<table border="1" cellspacing="0" cellpadding="5">
+                <tr>
+                  <th>No</th>
+                  <th class="text-center">Produk</th>
+                  <th class="text-center">Kategori</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-center" style="width: 200px;">Deskripsi</th>
+                  <th class="text-center">Jumlah</th>
+                  <th class="text-center">Harga</th>
+                  <th class="text-center">Total</th>
+                  <th class="text-center">Tgl Kadaluarsa</th>
+                </tr>';
+    $no = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+      $tgl_kadaluarsa = date_create($row["tgl_kadaluarsa"]);
+      $tgl_kadaluarsa = date_format($tgl_kadaluarsa, "d M Y");
+      $html .= '<tr>
+                    <td>' . $no++ . '</td>
+                    <td>' . $row['nama_produk'] . '</td>
+                    <td>' . $row['kategori_produk'] . '</td>
+                    <td>' . $row['status_produk'] . '</td>
+                    <td>' . $row['deskripsi'] . '</td>
+                    <td>' . $row['jumlah_produk'] . '</td>
+                    <td>Rp. ' . number_format($row['harga']) . ' / pcs</td>
+                    <td>Rp. ' . number_format($row['harga']*$row['jumlah_produk']) . '</td>
+                    <td>' . $tgl_kadaluarsa . '</td>
+                 </tr>';
+    }
+    $html .= '</table>';
+    $mpdf->WriteHTML($html);
+    $mpdf->Output('LAPORAN_PRODUK_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'.pdf', 'D');
+  }
+
   function exportProduk($conn, $bulan)
   {
     if (!empty($bulan)) {
@@ -1310,6 +1369,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         $image = "default.png";
       }
       $sql = "INSERT INTO produk (id_kategori_produk,id_status_produk,image_produk,nama_produk,deskripsi,jumlah_produk,harga,tgl_kadaluarsa) VALUES ('$data[id_kategori_produk]','$data[id_status_produk]','$image','$data[nama_produk]','$data[deskripsi]','$data[jumlah_produk]','$data[harga]','$data[tgl_kadaluarsa]')";
+      mysqli_query($conn, $sql);
     }
 
     if ($action == "update") {
@@ -1340,12 +1400,19 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         $image = $data['imageOld'];
       }
       $sql = "UPDATE produk SET id_kategori_produk = '$data[id_kategori_produk]', id_status_produk = '$data[id_status_produk]', image_produk = '$image', nama_produk = '$data[nama_produk]', deskripsi = '$data[deskripsi]', jumlah_produk = '$data[jumlah_produk]', harga = '$data[harga]', tgl_kadaluarsa = '$data[tgl_kadaluarsa]' WHERE id_produk = '$data[id_produk]'";
+      mysqli_query($conn, $sql);
     }
 
     if ($action == "delete") {
       $remove_image = str_replace($path, "", $data['image']);
       unlink($path . $remove_image);
       $sql = "DELETE FROM produk WHERE id_produk = '$data[id_produk]'";
+      mysqli_query($conn, $sql);
+    }
+
+    if ($action == "print") {
+      $bulan = $data['bulan'];
+      printProduk($conn, $bulan);
     }
 
     if ($action == "export") {
@@ -1353,7 +1420,6 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       exportProduk($conn, $bulan);
     }
 
-    mysqli_query($conn, $sql);
     return mysqli_affected_rows($conn);
   }
 
@@ -1443,6 +1509,84 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
+  function printPembelian($conn, $bulan)
+  {
+    $bulan_array = [
+      '01' => 'JANUARI', '02' => 'FEBRUARI', '03' => 'MARET',
+      '04' => 'APRIL', '05' => 'MEI', '06' => 'JUNI',
+      '07' => 'JULI', '08' => 'AGUSTUS', '09' => 'SEPTEMBER',
+      '10' => 'OKTOBER', '11' => 'NOVEMBER', '12' => 'DESEMBER'
+    ];
+    if (!empty($bulan)) {
+      $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
+        FROM pembelian
+        JOIN users ON pembelian.id_user = users.id_user
+        JOIN produk ON pembelian.id_produk = produk.id_produk
+        JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+        JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
+        WHERE pembelian.id_status_pembelian = '1'
+        AND DATE_FORMAT(pembelian.updated_at, '%m') = '$bulan'
+      ";
+      $bulan_text = "BULAN ".$bulan_array[$bulan] ?? "";
+    }else{
+      $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
+        FROM pembelian
+        JOIN users ON pembelian.id_user = users.id_user
+        JOIN produk ON pembelian.id_produk = produk.id_produk
+        JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+        JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
+        WHERE pembelian.id_status_pembelian = '1'
+      ";
+      $bulan_text = "";
+    }
+    $result = mysqli_query($conn, $query);
+    $mpdf = new \Mpdf\Mpdf();
+    $html = '<h1 style="text-align: center;">LAPORAN PENDAPATAN CV. AQUILA INDONESIA KUPANG '.$bulan_text.'</h1>';
+    $html .= '<table border="1" cellspacing="0" cellpadding="5">
+                <tr>
+                  <th>No</th>
+                  <th class="text-center">Status Bayar</th>
+                  <th class="text-center">Order ID</th>
+                  <th class="text-center">Pembeli</th>
+                  <th class="text-center">Produk</th>
+                  <th class="text-center">Kategori</th>
+                  <th class="text-center">Jumlah Beli</th>
+                  <th class="text-center">Harga</th>
+                  <th class="text-center">Total</th>
+                  <th class="text-center">Catatan</th>
+                  <th class="text-center">Tgl Tagihan</th>
+                  <th class="text-center">Tgl Pembayaran</th>
+                </tr>';
+    $no = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+      $tanggal_tagihan = date_create($row["tanggal_tagihan"]);
+      $tgl_tagihan = date_format($tanggal_tagihan, "d M Y");
+      if (!empty($row["tanggal_pembayaran"])) {
+        $tgl_pembayaran = date_create($row["tanggal_pembayaran"]);
+        $tgl_pembayaran = date_format($tgl_pembayaran, "d M Y");
+      } else {
+        $tgl_pembayaran = '-';
+      }
+      $html .= '<tr>
+                    <td>' . $no++ . '</td>
+                    <td>' . $row['status_pembelian'] . '</td>
+                    <td>#' . $row['order_id'] . '</td>
+                    <td>' . $row['name']."<br>".$row['email']."<br>".$row['tlpn']."<br>".$row['alamat'] . '</td>
+                    <td>' . $row['nama_produk'] . '</td>
+                    <td>' . $row['kategori_produk'] . '</td>
+                    <td>' . $row['jumlah_produk'] . '</td>
+                    <td>Rp. ' . number_format($row['harga']) . ' / pcs</td>
+                    <td>Rp. ' . number_format($row['total_harga']) . '</td>
+                    <td>' . $row['catatan'] . '</td>
+                    <td>' . $tgl_tagihan . '</td>
+                    <td>' . $tgl_pembayaran . '</td>
+                 </tr>';
+    }
+    $html .= '</table>';
+    $mpdf->WriteHTML($html);
+    $mpdf->Output('LAPORAN_PENDAPATAN_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'.pdf', 'D');
+  }
+
   function exportPembelian($conn, $bulan)
   {
     if (!empty($bulan)) {
@@ -1528,9 +1672,13 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     $writer->save('php://output');
     exit;
   }
-
   function pembelian($conn, $data, $action)
   {
+    if ($action == "print") {
+      $bulan = $data['bulan'];
+      printPembelian($conn, $bulan);
+    }
+
     if ($action == "export") {
       $bulan = $data['bulan'];
       exportPembelian($conn, $bulan);

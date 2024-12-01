@@ -2,7 +2,7 @@
 $_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Export Pendapatan";
 require_once("../../templates/views_top.php"); ?>
 
-<div class="nxl-content" style="height: 100vh;">
+<div class="nxl-content">
 
   <!-- [ page-header ] start -->
   <div class="page-header">
@@ -21,7 +21,7 @@ require_once("../../templates/views_top.php"); ?>
   <!-- [ page-header ] end -->
 
   <!-- [ Main Content ] start -->
-  <div class="main-content">
+  <div class="main-content" style="height: 100vh;">
     <div class="row">
       <div class="col-lg-6">
         <div class="card stretch stretch-full">

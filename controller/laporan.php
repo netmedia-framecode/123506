@@ -11,6 +11,18 @@
     JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
   ";
   $view_produk = mysqli_query($conn, $produk);
+  if (isset($_POST["print_produk"])) {
+    $validated_post = array_map(function ($value) use ($conn) {
+      return valid($conn, $value);
+    }, $_POST);
+    if (produk($conn, $validated_post, $action = 'print') > 0) {
+      $message = "Produk berhasil di print.";
+      $message_type = "success";
+      alert($message, $message_type);
+      header("Location: print-produk");
+      exit();
+    }
+  }
   if (isset($_POST["export_produk"])) {
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
@@ -42,6 +54,18 @@
       $message_type = "success";
       alert($message, $message_type);
       header("Location: export-pendapatan");
+      exit();
+    }
+  }
+  if (isset($_POST["print_pendapatan"])) {
+    $validated_post = array_map(function ($value) use ($conn) {
+      return valid($conn, $value);
+    }, $_POST);
+    if (pembelian($conn, $validated_post, $action = 'print') > 0) {
+      $message = "Pendapatan berhasil di print.";
+      $message_type = "success";
+      alert($message, $message_type);
+      header("Location: print-pendapatan");
       exit();
     }
   }

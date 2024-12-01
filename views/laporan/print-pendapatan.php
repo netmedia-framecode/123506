@@ -1,5 +1,5 @@
 <?php require_once("../../controller/laporan.php");
-$_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Export Produk";
+$_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Print Pendapatan";
 require_once("../../templates/views_top.php"); ?>
 
 <div class="nxl-content">
@@ -11,7 +11,7 @@ require_once("../../templates/views_top.php"); ?>
         <h5 class="m-b-10"><?= $_SESSION["project_cv_aquila_indonesia"]["name_page"] ?></h5>
       </div>
       <ul class="breadcrumb">
-        <li class="breadcrumb-item">Produk</li>
+        <li class="breadcrumb-item">Pendapatan</li>
         <li class="breadcrumb-item">
           <?= $_SESSION["project_cv_aquila_indonesia"]["name_page"]  ?>
         </li>
@@ -55,8 +55,8 @@ require_once("../../templates/views_top.php"); ?>
                 </select>
               </div>
               <div class="mb-3 hstack gap-2 justify-content-left">
-                <a href="produk" class="btn btn-success">Kembali</a>
-                <button type="submit" name="export_produk" class="btn btn-primary">Export</button>
+                <a href="pendapatan" class="btn btn-success">Kembali</a>
+                <button type="submit" name="print_pendapatan" class="btn btn-primary">Print</button>
               </div>
             </form>
 

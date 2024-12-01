@@ -24,6 +24,10 @@ require_once("../../templates/views_top.php"); ?>
           </a>
         </div>
         <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+          <a href="print-produk" class="btn btn-primary">
+            <i class="bi bi-printer me-2"></i>
+            <span>Print</span>
+          </a>
           <a href="export-produk" class="btn btn-primary">
             <i class="bi bi-file-earmark-ruled me-2"></i>
             <span>Export</span>
