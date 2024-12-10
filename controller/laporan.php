@@ -15,7 +15,7 @@
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
     }, $_POST);
-    if (produk($conn, $validated_post, $action = 'print') > 0) {
+    if (produk($conn, $validated_post, $action = 'print', $name = $name) > 0) {
       $message = "Produk berhasil di print.";
       $message_type = "success";
       alert($message, $message_type);
@@ -27,7 +27,7 @@
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
     }, $_POST);
-    if (produk($conn, $validated_post, $action = 'export') > 0) {
+    if (produk($conn, $validated_post, $action = 'export', $name = $name) > 0) {
       $message = "Produk berhasil di export.";
       $message_type = "success";
       alert($message, $message_type);
@@ -49,7 +49,7 @@
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
     }, $_POST);
-    if (pembelian($conn, $validated_post, $action = 'export') > 0) {
+    if (pembelian($conn, $validated_post, $action = 'export', $name = $name) > 0) {
       $message = "Pembelian berhasil di export.";
       $message_type = "success";
       alert($message, $message_type);
@@ -61,7 +61,7 @@
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
     }, $_POST);
-    if (pembelian($conn, $validated_post, $action = 'print') > 0) {
+    if (pembelian($conn, $validated_post, $action = 'print', $name = $name) > 0) {
       $message = "Pendapatan berhasil di print.";
       $message_type = "success";
       alert($message, $message_type);

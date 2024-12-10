@@ -1219,7 +1219,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
-  function printProduk($conn, $bulan)
+  function printProduk($conn, $bulan, $name)
   {
     $bulan_array = [
       '01' => 'JANUARI', '02' => 'FEBRUARI', '03' => 'MARET',
@@ -1244,7 +1244,21 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     }
     $result = mysqli_query($conn, $query);
     $mpdf = new \Mpdf\Mpdf();
-    $html = '<h1 style="text-align: center;">LAPORAN PRODUK CV. AQUILA INDONESIA KUPANG '.$bulan_text.'</h1>';
+    $html = '
+    <div style="position: relative; width: 100%; height: 100vh; text-align: center; page-break-after: always;">
+        <!-- Konten Tengah -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <img src="../../assets/img/logo.png" alt="Logo" style="max-width: 200px; margin-bottom: 20px;">
+            <h2 style="font-size: 24px; line-height: 1.5;">LAPORAN PRODUK CV. AQUILA INDONESIA <br>KUPANG ' . $bulan_text . ' TAHUN ' . date('Y') . '</h2>
+        </div>
+        
+        <!-- Teks di Pojok Kanan Bawah -->
+        <div style="position: absolute; margin-top: 400px; bottom: 10px; right: 10px; text-align: right; font-size: 14px;">
+            <p style="margin-bottom: 50px;">Kupang, '.date('d F Y').'</p>
+            <p style="margin: 0; font-weight: bold;">'.$name.'</p>
+        </div>
+    </div>
+    ';
     $html .= '<table border="1" cellspacing="0" cellpadding="5">
                 <tr>
                   <th>No</th>
@@ -1275,7 +1289,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     }
     $html .= '</table>';
     $mpdf->WriteHTML($html);
-    $mpdf->Output('LAPORAN_PRODUK_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'.pdf', 'D');
+    $mpdf->Output('LAPORAN_PRODUK_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'_tahun_'.date('Y').'.pdf', 'D');
   }
 
   function exportProduk($conn, $bulan)
@@ -1341,7 +1355,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     exit;
   }
 
-  function produk($conn, $data, $action)
+  function produk($conn, $data, $action, $name)
   {
     $path = "../../assets/img/produk/";
 
@@ -1412,7 +1426,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
 
     if ($action == "print") {
       $bulan = $data['bulan'];
-      printProduk($conn, $bulan);
+      printProduk($conn, $bulan, $name);
     }
 
     if ($action == "export") {
@@ -1509,7 +1523,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
-  function printPembelian($conn, $bulan)
+  function printPembelian($conn, $bulan, $name)
   {
     $bulan_array = [
       '01' => 'JANUARI', '02' => 'FEBRUARI', '03' => 'MARET',
@@ -1541,7 +1555,21 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     }
     $result = mysqli_query($conn, $query);
     $mpdf = new \Mpdf\Mpdf();
-    $html = '<h1 style="text-align: center;">LAPORAN PENDAPATAN CV. AQUILA INDONESIA KUPANG '.$bulan_text.'</h1>';
+    $html = '
+    <div style="position: relative; width: 100%; height: 100vh; text-align: center; page-break-after: always;">
+        <!-- Konten Tengah -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <img src="../../assets/img/logo.png" alt="Logo" style="max-width: 200px; margin-bottom: 20px;">
+            <h2 style="font-size: 24px; line-height: 1.5;">LAPORAN PENDAPATAN CV. AQUILA INDONESIA <br>KUPANG ' . $bulan_text . ' TAHUN ' . date('Y') . '</h2>
+        </div>
+        
+        <!-- Teks di Pojok Kanan Bawah -->
+        <div style="position: absolute; margin-top: 400px; bottom: 10px; right: 10px; text-align: right; font-size: 14px;">
+            <p style="margin-bottom: 50px;">Kupang, '.date('d F Y').'</p>
+            <p style="margin: 0; font-weight: bold;">'.$name.'</p>
+        </div>
+    </div>
+    ';
     $html .= '<table border="1" cellspacing="0" cellpadding="5">
                 <tr>
                   <th>No</th>
@@ -1584,7 +1612,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     }
     $html .= '</table>';
     $mpdf->WriteHTML($html);
-    $mpdf->Output('LAPORAN_PENDAPATAN_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'.pdf', 'D');
+    $mpdf->Output('LAPORAN_PENDAPATAN_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'_tahun_'.date('Y').'.pdf', 'D');
   }
 
   function exportPembelian($conn, $bulan)
@@ -1672,11 +1700,11 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     $writer->save('php://output');
     exit;
   }
-  function pembelian($conn, $data, $action)
+  function pembelian($conn, $data, $action, $name)
   {
     if ($action == "print") {
       $bulan = $data['bulan'];
-      printPembelian($conn, $bulan);
+      printPembelian($conn, $bulan, $name);
     }
 
     if ($action == "export") {
