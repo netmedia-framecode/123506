@@ -54,6 +54,10 @@ require_once("../../templates/views_top.php"); ?>
                   ?>
                 </select>
               </div>
+              <div class="mb-3">
+                <label for="tahun" class="form-label">Tahun</label>
+                <input type="number" name="tahun" id="tahun" min="2024" max="2030" value="<?= date('Y')?>" class="form-control">
+              </div>
               <div class="mb-3 hstack gap-2 justify-content-left">
                 <a href="pendapatan" class="btn btn-success">Kembali</a>
                 <button type="submit" name="print_pendapatan" class="btn btn-primary">Print</button>

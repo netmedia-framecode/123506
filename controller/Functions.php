@@ -1219,7 +1219,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
-  function printProduk($conn, $bulan, $name)
+  function printProduk($conn, $bulan, $tahun, $name)
   {
     $bulan_array = [
       '01' => 'JANUARI', '02' => 'FEBRUARI', '03' => 'MARET',
@@ -1232,13 +1232,15 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
                 FROM produk
                 JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
                 JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
-                WHERE DATE_FORMAT(produk.updated_at, '%m') = '$bulan'";
+                WHERE DATE_FORMAT(produk.updated_at, '%m') = '$bulan'
+                AND DATE_FORMAT(produk.updated_at, '%Y') = '$tahun'";
       $bulan_text = "BULAN ".$bulan_array[$bulan] ?? "";
     } else {
       $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
         FROM produk
         JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
         JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+        WHERE DATE_FORMAT(produk.updated_at, '%Y') = '$tahun'
       ";
       $bulan_text = "";
     }
@@ -1249,13 +1251,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         <!-- Konten Tengah -->
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <img src="../../assets/img/logo.png" alt="Logo" style="max-width: 200px; margin-bottom: 20px;">
-            <h2 style="font-size: 24px; line-height: 1.5;">LAPORAN PRODUK CV. AQUILA INDONESIA <br>KUPANG ' . $bulan_text . ' TAHUN ' . date('Y') . '</h2>
-        </div>
-        
-        <!-- Teks di Pojok Kanan Bawah -->
-        <div style="position: absolute; margin-top: 400px; bottom: 10px; right: 10px; text-align: right; font-size: 14px;">
-            <p style="margin-bottom: 50px;">Kupang, '.date('d F Y').'</p>
-            <p style="margin: 0; font-weight: bold;">'.$name.'</p>
+            <h2 style="font-size: 24px; line-height: 1.5;">LAPORAN PRODUK CV. AQUILA INDONESIA <br>KUPANG ' . $bulan_text . ' TAHUN ' . $tahun . '</h2>
         </div>
     </div>
     ';
@@ -1287,9 +1283,14 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
                     <td>' . $tgl_kadaluarsa . '</td>
                  </tr>';
     }
-    $html .= '</table>';
+    $html .= '</table>
+    <div style="margin-top: 100px; right: 10px; text-align: right; font-size: 14px;">
+      <p style="margin-bottom: 50px;">Kupang, '.date('d F Y').'</p>
+      <p style="margin: 0; font-weight: bold;">'.$name.'</p>
+    </div>
+    ';
     $mpdf->WriteHTML($html);
-    $mpdf->Output('LAPORAN_PRODUK_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'_tahun_'.date('Y').'.pdf', 'D');
+    $mpdf->Output('LAPORAN_PRODUK_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'_tahun_'.$tahun.'.pdf', 'D');
   }
 
   function exportProduk($conn, $bulan)
@@ -1426,7 +1427,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
 
     if ($action == "print") {
       $bulan = $data['bulan'];
-      printProduk($conn, $bulan, $name);
+      $tahun = $data['tahun'];
+      printProduk($conn, $bulan, $tahun, $name);
     }
 
     if ($action == "export") {
@@ -1523,7 +1525,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
-  function printPembelian($conn, $bulan, $name)
+  function printPembelian($conn, $bulan, $tahun, $name)
   {
     $bulan_array = [
       '01' => 'JANUARI', '02' => 'FEBRUARI', '03' => 'MARET',
@@ -1540,6 +1542,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
         WHERE pembelian.id_status_pembelian = '1'
         AND DATE_FORMAT(pembelian.updated_at, '%m') = '$bulan'
+        AND DATE_FORMAT(pembelian.updated_at, '%Y') = '$tahun'
       ";
       $bulan_text = "BULAN ".$bulan_array[$bulan] ?? "";
     }else{
@@ -1550,6 +1553,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
         JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
         WHERE pembelian.id_status_pembelian = '1'
+        AND DATE_FORMAT(pembelian.updated_at, '%Y') = '$tahun'
       ";
       $bulan_text = "";
     }
@@ -1560,13 +1564,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         <!-- Konten Tengah -->
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <img src="../../assets/img/logo.png" alt="Logo" style="max-width: 200px; margin-bottom: 20px;">
-            <h2 style="font-size: 24px; line-height: 1.5;">LAPORAN PENDAPATAN CV. AQUILA INDONESIA <br>KUPANG ' . $bulan_text . ' TAHUN ' . date('Y') . '</h2>
-        </div>
-        
-        <!-- Teks di Pojok Kanan Bawah -->
-        <div style="position: absolute; margin-top: 400px; bottom: 10px; right: 10px; text-align: right; font-size: 14px;">
-            <p style="margin-bottom: 50px;">Kupang, '.date('d F Y').'</p>
-            <p style="margin: 0; font-weight: bold;">'.$name.'</p>
+            <h2 style="font-size: 24px; line-height: 1.5;">LAPORAN PENDAPATAN CV. AQUILA INDONESIA <br>KUPANG ' . $bulan_text . ' TAHUN ' . $tahun . '</h2>
         </div>
     </div>
     ';
@@ -1610,9 +1608,13 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
                     <td>' . $tgl_pembayaran . '</td>
                  </tr>';
     }
-    $html .= '</table>';
+    $html .= '</table>
+    <div style="margin-top: 100px; right: 10px; text-align: right; font-size: 14px;">
+      <p style="margin-bottom: 50px;">Kupang, '.date('d F Y').'</p>
+      <p style="margin: 0; font-weight: bold;">'.$name.'</p>
+    </div>';
     $mpdf->WriteHTML($html);
-    $mpdf->Output('LAPORAN_PENDAPATAN_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'_tahun_'.date('Y').'.pdf', 'D');
+    $mpdf->Output('LAPORAN_PENDAPATAN_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'_tahun_'.$tahun.'.pdf', 'D');
   }
 
   function exportPembelian($conn, $bulan)
@@ -1704,7 +1706,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   {
     if ($action == "print") {
       $bulan = $data['bulan'];
-      printPembelian($conn, $bulan, $name);
+      $tahun = $data['tahun'];
+      printPembelian($conn, $bulan, $tahun, $name);
     }
 
     if ($action == "export") {
