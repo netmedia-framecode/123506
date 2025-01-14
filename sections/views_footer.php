@@ -31,6 +31,7 @@ const showMessage = (type, title, message) => {
 };
 
 showMessage("success", "Berhasil Terkirim", $(".message-success").data("message-success"));
+showMessage("success", "Berhasil Dihapus", $(".message-success-delete").data("message-success-delete"));
 showMessage("info", "For your information", $(".message-info").data("message-info"));
 showMessage("warning", "Peringatan!!", $(".message-warning").data("message-warning"));
 showMessage("error", "Kesalahan", $(".message-danger").data("message-danger"));

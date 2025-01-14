@@ -36,6 +36,7 @@ require_once("../../templates/views_top.php"); ?>
           <div class="card-body">
             <form action="" method="post">
               <input type="hidden" name="id_status_produk" value="<?= $view_data['id_status_produk'] ?>">
+              <input type="hidden" name="status_produkOld" value="<?= $view_data['status_produk'] ?>">
               <div class="mb-3">
                 <label for="status_produk" class="form-label">Status Produk</label>
                 <input type="text" name="status_produk" value="<?= $view_data['status_produk']?>" class="form-control"

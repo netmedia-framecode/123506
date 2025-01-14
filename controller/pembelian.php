@@ -37,7 +37,7 @@
     // }, $_POST);
     if (keranjang($conn, $_POST, $action = 'delete', $id_user) > 0) {
       $message = "Produk " . $_POST['nama_produk'] . " berhasil dihapus dari keranjang anda.";
-      $message_type = "success";
+      $message_type = "success-delete";
       alert($message, $message_type);
       header("Location: keranjang");
       exit();
@@ -85,7 +85,7 @@
       WHERE pembelian.id_status_pembelian != '1'
     ";
   }else if($id_role == 3){
-    $tagihan = "SELECT pembelian.*, produk.image_produk, produk.nama_produk, produk.jumlah_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
+    $tagihan = "SELECT pembelian.*, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
       FROM pembelian
       JOIN produk ON pembelian.id_produk = produk.id_produk
       JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
@@ -148,7 +148,7 @@
       WHERE pembelian.id_status_pembelian = '1'
     ";
   }else if($id_role == 3){
-    $pembelian = "SELECT pembelian.*, produk.image_produk, produk.nama_produk, produk.jumlah_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
+    $pembelian = "SELECT pembelian.*, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
       FROM pembelian
       JOIN produk ON pembelian.id_produk = produk.id_produk
       JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk

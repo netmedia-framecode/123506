@@ -2,7 +2,7 @@
 $_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Tagihan";
 require_once("../../templates/views_top.php"); ?>
 
-<div class="nxl-content">
+<div class="nxl-content" style="height: 110vh;">
 
   <!-- [ page-header ] start -->
   <div class="page-header">

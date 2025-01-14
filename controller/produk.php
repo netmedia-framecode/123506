@@ -93,7 +93,7 @@
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
     }, $_POST);
-    if (produk($conn, $validated_post, $action = 'insert') > 0) {
+    if (produk($conn, $validated_post, $action = 'insert', $name) > 0) {
       $message = "Produk baru berhasil ditambahkan.";
       $message_type = "success";
       alert($message, $message_type);
@@ -105,7 +105,7 @@
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
     }, $_POST);
-    if (produk($conn, $validated_post, $action = 'update') > 0) {
+    if (produk($conn, $validated_post, $action = 'update', $name) > 0) {
       $message = "Produk " . $_POST['nama_produkOld'] . " berhasil diubah.";
       $message_type = "success";
       alert($message, $message_type);
@@ -117,7 +117,7 @@
     $validated_post = array_map(function ($value) use ($conn) {
       return valid($conn, $value);
     }, $_POST);
-    if (produk($conn, $validated_post, $action = 'delete') > 0) {
+    if (produk($conn, $validated_post, $action = 'delete', $name) > 0) {
       $message = "Produk " . $_POST['nama_produk'] . " berhasil dihapus.";
       $message_type = "success";
       alert($message, $message_type);

@@ -2,7 +2,7 @@
 $_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Keranjang";
 require_once("../../templates/views_top.php"); ?>
 
-<div class="nxl-content">
+<div class="nxl-content" style="height: 110vh;">
 
   <!-- [ page-header ] start -->
   <div class="page-header">
@@ -95,6 +95,7 @@ require_once("../../templates/views_top.php"); ?>
                   </div>
                   <div class="mb-3">
                     <input type="hidden" name="id_keranjang" value="<?= $data['id_keranjang']?>">
+                    <input type="hidden" name="nama_produk" value="<?= $data['nama_produk']?>">
                     <button type="submit" name="delete_keranjang" class="btn btn-danger"
                       style="margin-left: -10px; margin-top: 30px;"><i class="bi bi-trash"></i></button>
                   </div>

@@ -37,9 +37,6 @@
       return valid($conn, $value);
     }, $_POST);
     if (chat($conn, $validated_post, $action = 'update', $id_user) > 0) {
-      $message = "Pesan berhasil dibalas.";
-      $message_type = "success";
-      alert($message, $message_type);
       header("Location: chat?u=".$_POST['id_user']);
       exit();
     }

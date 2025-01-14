@@ -41,6 +41,7 @@ require_once("../../templates/views_top.php"); ?>
             <form action="" method="post" enctype="multipart/form-data">
               <input type="hidden" name="id_produk" value="<?= $view_data['id_produk'] ?>">
               <input type="hidden" name="imageOld" value="<?= $view_data['image_produk'] ?>">
+              <input type="hidden" name="nama_produkOld" value="<?= $view_data['nama_produk'] ?>">
               <div class="mb-3">
                 <label for="id_kategori_produk" class="form-label">Kategori Produk</label>
                 <select name="id_kategori_produk" class="form-control" id="id_kategori_produk" required>

@@ -32,8 +32,19 @@ function handle_error($errno, $errstr, $errfile, $errline)
 
 function valid($conn, $value)
 {
-  $valid = htmlspecialchars(addslashes(trim(mysqli_real_escape_string($conn, $value))));
-  return $valid;
+  if (is_array($value)) {
+    // Rekursif untuk setiap elemen array
+    return array_map(function ($item) use ($conn) {
+      return valid($conn, $item);
+    }, $value);
+  }
+
+  // Proses jika $value adalah string
+  $value = trim($value); // Hilangkan spasi di awal/akhir
+  $value = mysqli_real_escape_string($conn, $value); // Lindungi dari injeksi SQL
+  $value = addslashes($value); // Escape karakter khusus
+  $value = htmlspecialchars($value); // Konversi karakter HTML
+  return $value;
 }
 
 function separateAlphaNumeric($string)
@@ -904,14 +915,14 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
           }
           ');
           fclose($file);
-          
+
           $file_controller = fopen("../controller/" . $namaFolder . ".php", "w");
           fwrite($file_controller, '<?php
   
           require_once("../../config/Base.php");
           require_once("../../config/Auth.php");
           require_once("../../config/Alert.php");
-          require_once("../../views/'.$namaFolder.'/redirect.php");
+          require_once("../../views/' . $namaFolder . '/redirect.php");
           ');
           fclose($file_controller);
         } else {
@@ -969,7 +980,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     mysqli_query($conn, $sql);
     return mysqli_affected_rows($conn);
   }
-    
+
   function sub_menu($conn, $data, $action, $baseURL)
   {
     $url = strtolower($data['title']);
@@ -989,8 +1000,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         $data_menu = mysqli_fetch_assoc($view_menu);
         $menu = strtolower($data_menu['menu']);
         $menu = str_replace(" ", "-", $menu);
-        
-        $file_views = fopen("../views/".$menu."/" . $url . ".php", "w");
+
+        $file_views = fopen("../views/" . $menu . "/" . $url . ".php", "w");
         fwrite($file_views, '<?php require_once("../../controller/' . $menu . '.php");
         $_SESSION["project_cv_aquila_indonesia"]["name_page"] = "' . $data['title'] . '";
         require_once("../../templates/views_top.php"); ?>
@@ -1017,7 +1028,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
                   </a>
                 </div>
                 <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-                  <a href="add-'.$url.'" class="btn btn-primary">
+                  <a href="add-' . $url . '" class="btn btn-primary">
                     <i class="feather-plus me-2"></i>
                     <span>Tambah</span>
                   </a>
@@ -1042,8 +1053,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         <?php require_once("../../templates/views_bottom.php") ?>
         ');
         fclose($file_views);
-        
-        $file_views_add = fopen("../views/".$menu."/add-" . $url . ".php", "w");
+
+        $file_views_add = fopen("../views/" . $menu . "/add-" . $url . ".php", "w");
         fwrite($file_views_add, '<?php require_once("../../controller/' . $menu . '.php");
         $_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Tambah ' . $data['title'] . '";
         require_once("../../templates/views_top.php"); ?>
@@ -1074,16 +1085,16 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         <?php require_once("../../templates/views_bottom.php") ?>
         ');
         fclose($file_views_add);
-        
-        $petik="'";
-        $file_views_edit = fopen("../views/".$menu."/edit-" . $url . ".php", "w");
+
+        $petik = "'";
+        $file_views_edit = fopen("../views/" . $menu . "/edit-" . $url . ".php", "w");
         fwrite($file_views_edit, '<?php require_once("../../controller/' . $menu . '.php");
         if(!isset($_GET["p"])){
           header("Location: menu");
           exit();
         }else{
           $id = valid($conn, $_GET["p"]); 
-          $pull_data = "SELECT * FROM  WHERE  = '.$petik.'$id'.$petik.'";
+          $pull_data = "SELECT * FROM  WHERE  = ' . $petik . '$id' . $petik . '";
           $store_data = mysqli_query($conn, $pull_data);
           $view_data = mysqli_fetch_assoc($store_data);
         $_SESSION["project_cv_aquila_indonesia"]["name_page"] = "Ubah ' . $data['title'] . '";
@@ -1099,7 +1110,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
               </div>
               <ul class="breadcrumb">
                 <li class="breadcrumb-item">' . $data['title'] . '</li>
-                <li class="breadcrumb-item"><?= $_SESSION["project_cv_aquila_indonesia"]["name_page"].'.$petik.' '.$petik.'.$view_data[""]  ?></li>
+                <li class="breadcrumb-item"><?= $_SESSION["project_cv_aquila_indonesia"]["name_page"].' . $petik . ' ' . $petik . '.$view_data[""]  ?></li>
               </ul>
             </div>
           </div>
@@ -1116,8 +1127,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         require_once("../../templates/views_bottom.php") ?>
         ');
         fclose($file_views_edit);
-        
-        $url_sub = $menu."/".$url;
+
+        $url_sub = $menu . "/" . $url;
         $sql = "INSERT INTO user_sub_menu(id_menu,id_active,title,url) VALUES('$data[id_menu]','$data[id_active]','$data[title]','$url_sub')";
       }
     }
@@ -1138,16 +1149,16 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       $data_menu = mysqli_fetch_assoc($view_menu);
       $menu = strtolower($data_menu['menu']);
       $menu = str_replace(" ", "-", $menu);
-      rename($menu.'/'.$data['urlOld'].'.php', $menu.'/'.$url.'.php');
-      rename($menu.'/'."add-".$data['urlOld'].'.php', $menu.'/'."add-".$url.'.php');
-      rename($menu.'/'."edit-".$data['urlOld'].'.php', $menu.'/'."edit-".$url.'.php');
+      rename($menu . '/' . $data['urlOld'] . '.php', $menu . '/' . $url . '.php');
+      rename($menu . '/' . "add-" . $data['urlOld'] . '.php', $menu . '/' . "add-" . $url . '.php');
+      rename($menu . '/' . "edit-" . $data['urlOld'] . '.php', $menu . '/' . "edit-" . $url . '.php');
       $sql = "UPDATE user_sub_menu SET id_menu='$data[id_menu]', id_active='$data[id_active]', title='$data[title]', url='$url' WHERE id_sub_menu='$data[id_sub_menu]'";
     }
 
     if ($action == "delete") {
-      unlink("../views/".$data['menu']."/" . $url . ".php");
-      unlink("../views/".$data['menu']."/" . "add-" . $url . ".php");
-      unlink("../views/".$data['menu']."/" . "edit-" . $url . ".php");
+      unlink("../views/" . $data['menu'] . "/" . $url . ".php");
+      unlink("../views/" . $data['menu'] . "/" . "add-" . $url . ".php");
+      unlink("../views/" . $data['menu'] . "/" . "edit-" . $url . ".php");
       $sql = "DELETE FROM user_sub_menu WHERE id_sub_menu='$data[id_sub_menu]'";
     }
 
@@ -1222,10 +1233,18 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   function printProduk($conn, $bulan, $tahun, $name)
   {
     $bulan_array = [
-      '01' => 'JANUARI', '02' => 'FEBRUARI', '03' => 'MARET',
-      '04' => 'APRIL', '05' => 'MEI', '06' => 'JUNI',
-      '07' => 'JULI', '08' => 'AGUSTUS', '09' => 'SEPTEMBER',
-      '10' => 'OKTOBER', '11' => 'NOVEMBER', '12' => 'DESEMBER'
+      '01' => 'JANUARI',
+      '02' => 'FEBRUARI',
+      '03' => 'MARET',
+      '04' => 'APRIL',
+      '05' => 'MEI',
+      '06' => 'JUNI',
+      '07' => 'JULI',
+      '08' => 'AGUSTUS',
+      '09' => 'SEPTEMBER',
+      '10' => 'OKTOBER',
+      '11' => 'NOVEMBER',
+      '12' => 'DESEMBER'
     ];
     if (!empty($bulan)) {
       $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
@@ -1234,7 +1253,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
                 JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
                 WHERE DATE_FORMAT(produk.updated_at, '%m') = '$bulan'
                 AND DATE_FORMAT(produk.updated_at, '%Y') = '$tahun'";
-      $bulan_text = "BULAN ".$bulan_array[$bulan] ?? "";
+      $bulan_text = "BULAN " . $bulan_array[$bulan] ?? "";
     } else {
       $query = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
         FROM produk
@@ -1279,18 +1298,18 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
                     <td>' . $row['deskripsi'] . '</td>
                     <td>' . $row['jumlah_produk'] . '</td>
                     <td>Rp. ' . number_format($row['harga']) . ' / pcs</td>
-                    <td>Rp. ' . number_format($row['harga']*$row['jumlah_produk']) . '</td>
+                    <td>Rp. ' . number_format($row['harga'] * $row['jumlah_produk']) . '</td>
                     <td>' . $tgl_kadaluarsa . '</td>
                  </tr>';
     }
     $html .= '</table>
     <div style="margin-top: 100px; right: 10px; text-align: right; font-size: 14px;">
-      <p style="margin-bottom: 50px;">Kupang, '.date('d F Y').'</p>
-      <p style="margin: 0; font-weight: bold;">'.$name.'</p>
+      <p style="margin-bottom: 50px;">Kupang, ' . date('d F Y') . '</p>
+      <p style="margin: 0; font-weight: bold;">' . $name . '</p>
     </div>
     ';
     $mpdf->WriteHTML($html);
-    $mpdf->Output('LAPORAN_PRODUK_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'_tahun_'.$tahun.'.pdf', 'D');
+    $mpdf->Output('LAPORAN_PRODUK_CV._AQUILA_INDONESIA_KUPANG_' . $bulan_text . '_tahun_' . $tahun . '.pdf', 'D');
   }
 
   function exportProduk($conn, $bulan)
@@ -1338,8 +1357,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       $sheet->setCellValue('D' . $row, $row_data['status_produk']);
       $sheet->setCellValue('E' . $row, $row_data['deskripsi']);
       $sheet->setCellValue('F' . $row, $row_data['jumlah_produk']);
-      $sheet->setCellValue('G' . $row, "Rp.".number_format($row_data['harga']));
-      $sheet->setCellValue('H' . $row, "Rp.".number_format($row_data['harga']*$row_data['jumlah_produk']));
+      $sheet->setCellValue('G' . $row, "Rp." . number_format($row_data['harga']));
+      $sheet->setCellValue('H' . $row, "Rp." . number_format($row_data['harga'] * $row_data['jumlah_produk']));
       $sheet->setCellValue('I' . $row, $tgl_kadaluarsa);
       $row++;
       $no++;
@@ -1380,7 +1399,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
           alert($message, $message_type);
           return false;
         }
-      }else{
+      } else {
         $image = "default.png";
       }
       $sql = "INSERT INTO produk (id_kategori_produk,id_status_produk,image_produk,nama_produk,deskripsi,jumlah_produk,harga,tgl_kadaluarsa) VALUES ('$data[id_kategori_produk]','$data[id_status_produk]','$image','$data[nama_produk]','$data[deskripsi]','$data[jumlah_produk]','$data[harga]','$data[tgl_kadaluarsa]')";
@@ -1419,7 +1438,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     }
 
     if ($action == "delete") {
-      $remove_image = str_replace($path, "", $data['image']);
+      $remove_image = str_replace($path, "", $data['image_produk']);
       unlink($path . $remove_image);
       $sql = "DELETE FROM produk WHERE id_produk = '$data[id_produk]'";
       mysqli_query($conn, $sql);
@@ -1528,10 +1547,18 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   function printPembelian($conn, $bulan, $tahun, $name)
   {
     $bulan_array = [
-      '01' => 'JANUARI', '02' => 'FEBRUARI', '03' => 'MARET',
-      '04' => 'APRIL', '05' => 'MEI', '06' => 'JUNI',
-      '07' => 'JULI', '08' => 'AGUSTUS', '09' => 'SEPTEMBER',
-      '10' => 'OKTOBER', '11' => 'NOVEMBER', '12' => 'DESEMBER'
+      '01' => 'JANUARI',
+      '02' => 'FEBRUARI',
+      '03' => 'MARET',
+      '04' => 'APRIL',
+      '05' => 'MEI',
+      '06' => 'JUNI',
+      '07' => 'JULI',
+      '08' => 'AGUSTUS',
+      '09' => 'SEPTEMBER',
+      '10' => 'OKTOBER',
+      '11' => 'NOVEMBER',
+      '12' => 'DESEMBER'
     ];
     if (!empty($bulan)) {
       $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
@@ -1544,8 +1571,8 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         AND DATE_FORMAT(pembelian.updated_at, '%m') = '$bulan'
         AND DATE_FORMAT(pembelian.updated_at, '%Y') = '$tahun'
       ";
-      $bulan_text = "BULAN ".$bulan_array[$bulan] ?? "";
-    }else{
+      $bulan_text = "BULAN " . $bulan_array[$bulan] ?? "";
+    } else {
       $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
         FROM pembelian
         JOIN users ON pembelian.id_user = users.id_user
@@ -1597,7 +1624,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
                     <td>' . $no++ . '</td>
                     <td>' . $row['status_pembelian'] . '</td>
                     <td>#' . $row['order_id'] . '</td>
-                    <td>' . $row['name']."<br>".$row['email']."<br>".$row['tlpn']."<br>".$row['alamat'] . '</td>
+                    <td>' . $row['name'] . "<br>" . $row['email'] . "<br>" . $row['tlpn'] . "<br>" . $row['alamat'] . '</td>
                     <td>' . $row['nama_produk'] . '</td>
                     <td>' . $row['kategori_produk'] . '</td>
                     <td>' . $row['jumlah_produk'] . '</td>
@@ -1610,11 +1637,11 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     }
     $html .= '</table>
     <div style="margin-top: 100px; right: 10px; text-align: right; font-size: 14px;">
-      <p style="margin-bottom: 50px;">Kupang, '.date('d F Y').'</p>
-      <p style="margin: 0; font-weight: bold;">'.$name.'</p>
+      <p style="margin-bottom: 50px;">Kupang, ' . date('d F Y') . '</p>
+      <p style="margin: 0; font-weight: bold;">' . $name . '</p>
     </div>';
     $mpdf->WriteHTML($html);
-    $mpdf->Output('LAPORAN_PENDAPATAN_CV._AQUILA_INDONESIA_KUPANG_'.$bulan_text.'_tahun_'.$tahun.'.pdf', 'D');
+    $mpdf->Output('LAPORAN_PENDAPATAN_CV._AQUILA_INDONESIA_KUPANG_' . $bulan_text . '_tahun_' . $tahun . '.pdf', 'D');
   }
 
   function exportPembelian($conn, $bulan)
@@ -1629,7 +1656,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
         WHERE pembelian.id_status_pembelian = '1'
         AND DATE_FORMAT(pembelian.updated_at, '%m') = '$bulan'
       ";
-    }else{
+    } else {
       $query = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
         FROM pembelian
         JOIN users ON pembelian.id_user = users.id_user
@@ -1671,19 +1698,19 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       $tanggal_pembayaran = date_create($row_data["tanggal_pembayaran"]);
       $tanggal_pembayaran = date_format($tanggal_pembayaran, "d M Y");
       $sheet->setCellValue('A' . $row, $no);
-      $sheet->setCellValue('B' . $row, "#".$row_data['order_id']);
+      $sheet->setCellValue('B' . $row, "#" . $row_data['order_id']);
       $sheet->setCellValue('C' . $row, $row_data['name']);
-      if(empty($row_data['tlpn'])){
+      if (empty($row_data['tlpn'])) {
         $sheet->setCellValue('D' . $row, $row_data['email']);
-      }else{
-        $sheet->setCellValue('D' . $row, $row_data['email']." / ".$row_data['tlpn']);
+      } else {
+        $sheet->setCellValue('D' . $row, $row_data['email'] . " / " . $row_data['tlpn']);
       }
       $sheet->setCellValue('E' . $row, $row_data['alamat']);
       $sheet->setCellValue('F' . $row, $row_data['nama_produk']);
       $sheet->setCellValue('G' . $row, $row_data['kategori_produk']);
       $sheet->setCellValue('H' . $row, $row_data['jumlah_produk']);
-      $sheet->setCellValue('I' . $row, "Rp.".number_format($row_data['harga_satuan']));
-      $sheet->setCellValue('J' . $row, "Rp.".number_format($row_data['total_harga']));
+      $sheet->setCellValue('I' . $row, "Rp." . number_format($row_data['harga_satuan']));
+      $sheet->setCellValue('J' . $row, "Rp." . number_format($row_data['total_harga']));
       $sheet->setCellValue('K' . $row, $row_data['status_pembelian']);
       $sheet->setCellValue('L' . $row, $row_data['catatan']);
       $sheet->setCellValue('M' . $row, $tanggal_tagihan);
@@ -1730,10 +1757,10 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       $view_chat = mysqli_query($conn, $chat);
       $data_chat = mysqli_fetch_assoc($view_chat);
       $reply = $data_chat['reply'];
-      if(empty($reply)){
+      if (empty($reply)) {
         $sql = "UPDATE chat SET reply = '$data[message]' WHERE id_user = '$data[id_user]' ORDER BY id_chat DESC LIMIT 1";
-      }else{
-        $sql = "INSERT INTO insert (id_user,reply) VALUES ('$data[id_user]','$data[message]')";
+      } else {
+        $sql = "INSERT INTO chat (id_user,reply) VALUES ('$data[id_user]','$data[message]')";
       }
     }
 
@@ -1766,4 +1793,3 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 }
-

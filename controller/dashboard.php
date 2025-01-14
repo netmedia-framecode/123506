@@ -33,11 +33,20 @@ $pull_expire = "SELECT * FROM pembelian WHERE id_status_pembelian='5'";
 $store_expire = mysqli_query($conn, $pull_expire);
 $count_expire = mysqli_num_rows($store_expire);
 
-$produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
-  FROM produk
-  JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
-  JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
-";
+if($id_role<=2){
+  $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+    FROM produk
+    JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+    JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+  ";
+}else if($id_role==3){
+  $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
+    FROM produk
+    JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
+    JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
+    WHERE produk.jumlah_produk != 0
+  ";
+}
 $view_produk = mysqli_query($conn, $produk);
 if (isset($_POST["add_wishlist"])) {
   // $validated_post = array_map(function ($value) use ($conn) {

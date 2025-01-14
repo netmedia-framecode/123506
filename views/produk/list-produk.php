@@ -96,6 +96,7 @@ require_once("../../templates/views_top.php"); ?>
                         <form action="" method="post">
                           <input type="hidden" name="id_produk" value="<?= $data['id_produk'] ?>">
                           <input type="hidden" name="nama_produk" value="<?= $data['nama_produk'] ?>">
+                          <input type="hidden" name="image_produk" value="<?= $data['image_produk'] ?>">
                           <button type="submit" name="delete_produk" class="btn btn-danger btn-sm">
                             <i class="bi bi-trash"></i>
                           </button>

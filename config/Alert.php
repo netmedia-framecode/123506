@@ -1,6 +1,6 @@
 <?php
 
-$messageTypes = ["success", "info", "warning", "danger", "dark"];
+$messageTypes = ["success", "success-delete", "info", "warning", "danger", "dark"];
 
 if (!isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   if (isset($_SESSION["project_cv_aquila_indonesia"]["time_message"]) && (time() - $_SESSION["project_cv_aquila_indonesia"]["time_message"]) > 2) {
