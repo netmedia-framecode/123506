@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 14 Jan 2025 pada 20.22
+-- Waktu pembuatan: 15 Jan 2025 pada 17.15
 -- Versi server: 10.6.20-MariaDB-cll-lve
 -- Versi PHP: 8.3.14
 
@@ -129,7 +129,11 @@ CREATE TABLE `pembelian` (
 
 INSERT INTO `pembelian` (`id_pembelian`, `id_user`, `id_produk`, `id_status_pembelian`, `order_id`, `token`, `jumlah_produk`, `harga_satuan`, `tanggal_tagihan`, `tanggal_pembayaran`, `metode_pembayaran`, `catatan`, `created_at`, `updated_at`) VALUES
 (58, 3, 2, 1, '148273', 'fade2a48023197b62401d61e', 10, 35000.00, '2025-01-14 19:45:35', NULL, NULL, NULL, '2025-01-14 19:45:35', '2025-01-14 19:45:53'),
-(59, 5, 2, 3, '983159', 'b2209d18771d2740044d6f94', 30, 35000.00, '2025-01-14 20:01:44', NULL, NULL, NULL, '2025-01-14 20:01:44', '2025-01-14 20:01:44');
+(59, 5, 2, 3, '983159', 'b2209d18771d2740044d6f94', 30, 35000.00, '2025-01-14 20:01:44', NULL, NULL, NULL, '2025-01-14 20:01:44', '2025-01-14 20:01:44'),
+(60, 5, 6, 1, '444991', 'd20eb899339810284f7640f1', 15, 35000.00, '2025-01-15 15:44:09', NULL, NULL, NULL, '2025-01-15 15:44:09', '2025-01-15 15:45:28'),
+(61, 5, 19, 1, '750562', '8c65f180172fcbb4e163d069', 5, 35000.00, '2025-01-15 15:46:57', NULL, NULL, NULL, '2025-01-15 15:46:57', '2025-01-15 15:47:26'),
+(62, 5, 23, 1, '191790', 'd32600bb7cfeb3025d0de98d', 20, 35000.00, '2025-01-15 15:54:23', NULL, NULL, NULL, '2025-01-15 15:54:23', '2025-01-15 15:55:01'),
+(63, 5, 22, 1, '660052', 'beeaff4546c24038ed5c9621', 70, 35000.00, '2025-01-15 15:56:20', NULL, NULL, NULL, '2025-01-15 15:56:20', '2025-01-15 15:56:51');
 
 -- --------------------------------------------------------
 
@@ -160,9 +164,7 @@ INSERT INTO `produk` (`id_produk`, `id_kategori_produk`, `id_status_produk`, `im
 (3, 3, 3, '544523052.jpg', 'Jahe Merah Gula Aren', 'Meningkatkan daya tahan tubuh, meningkatkan stamina, mengurangi kolesterol jahat, anti aging, mencegah kanker, menyehatkan otak, mencegah kanker usus, mencegah kebotakan, mengontrol gula darah, mengontrol tekanan darah.', 50, '35000', '2025-12-31', '2024-10-08 00:03:59', '2024-12-06 22:26:15'),
 (4, 3, 3, '4130152497.jpg', 'Jahe Merah Tanpa Gula', 'Mengontrol gula darah, meningkatkan daya tahan tubuh, meningkatkan stamina, mengurangi kolesterol jahat, anti aging, mencegah kanker, menyehatkan otak, mencegah kanker usus, mencegah kebotakan, mengontrol tekanan darah.', 35, '35000', '2025-12-30', '2024-10-08 00:04:35', '2024-12-06 22:39:36'),
 (5, 3, 3, '1841062439.jpg', 'Jahe Putih', 'Anti kanker, mencegah penuaan, menurunkan kolesterol, mengontrol glukosa darah, menangalkan bakteri dan virus, meredahkan sakit otot, meredahkan nyer haid.', 50, '35000', '2025-10-22', '2024-10-08 00:07:42', '2024-12-06 22:32:59'),
-(6, 3, 3, '1891193503.jpg', 'Kunyit Asam', 'ex ducimus molestiae numquam mollitia quisquam maxime dolores quae aliquam iusto sint?', 15, '35000', '2024-12-19', '2024-10-08 00:09:32', '2024-12-06 22:34:21'),
-(7, 3, 3, '3152380218.jpg', 'Kunyit Putih', 'Anti microba dan anti jamur, mengobati asam lambung, mencegah kanker, mengatasi masalah pencernaan, mencegah miom, penawar bisa ular, menghilang rasa sakit.', 75, '35000', '2025-08-26', '2024-10-08 00:10:14', '2024-12-06 22:36:00'),
-(8, 3, 3, '1030878100.jpg', 'Temulawak', 'Meningkatkan daya tahan tubuh, anti kanker, menangkat bakteri dan virus, anti radang, meraangsang proses metabolisme, meningkatkan fungsi hati, mengeluarkan toksin dalam darah.', 60, '35000', '2025-07-28', '2024-10-08 00:10:47', '2024-12-06 22:37:24'),
+(6, 3, 3, '1891193503.jpg', 'Kunyit Asam', 'ex ducimus molestiae numquam mollitia quisquam maxime dolores quae aliquam iusto sint?', 20, '35000', '2024-12-19', '2024-10-08 00:09:32', '2025-01-15 15:49:16'),
 (9, 3, 3, '2799743362.jpg', 'Jahe Merah', 'Meningkatkan daya tahan tubuh, meningkatkan stamina, mengurangi kolesterol jahat, anti aging, mencegah kanker, menyehatkan otak, mencegah kanker usus, mencegah kebotakan, mengontrol gula darah, mengontrol tekanan darah.', 50, '45000', '2025-11-05', '2024-11-15 10:42:05', '2024-12-10 09:57:47'),
 (10, 4, 3, '1942487634.jpg', 'Gula Kacang Jahe', '', 20, '17000', '2025-11-04', '2024-11-15 11:06:59', '2024-12-06 22:55:05'),
 (12, 4, 3, '1040229209.jpg', 'Kripik Pisang Gula Aren', '', 20, '17000', '2025-11-14', '2024-11-15 11:09:35', '2024-12-06 22:53:15'),
@@ -170,8 +172,10 @@ INSERT INTO `produk` (`id_produk`, `id_kategori_produk`, `id_status_produk`, `im
 (15, 4, 3, '3425124673.jpg', 'Zara Cookies Jahe Kacang', '', 10, '18000', '2024-12-07', '2024-11-15 14:57:24', '2024-12-06 22:47:21'),
 (16, 4, 3, '3898163268.jpg', 'Kripik Tempe', '', 50, '17000', '2025-12-01', '2024-12-02 11:25:10', '2024-12-06 22:51:10'),
 (17, 3, 3, '587568097.jpg', 'Kopi Stamina', '', 20, '35000', '2025-12-03', '2024-12-03 00:32:44', '2024-12-06 22:52:08'),
-(18, 3, 4, '4116476156.jpg', 'Beras Kencur', 'Minuman berbahan dasar lengkuas diolah menjadi bubuk minuman herbal instan dan siap dikonsumsi. Komposisi; Lengkuas, Gula.', 0, '35000', '2026-12-06', '2024-12-06 13:45:45', '2024-12-06 22:54:10'),
-(19, 3, 4, '1858941674.jpg', 'Kunyit Kuning', 'Minuman bubuk herbal instan yang diolah dari bahan-bahan pilihan. Komposisi; Kunyit kuning, gula pasir, kayu manis.', 5, '35000', '2026-12-06', '2024-12-06 13:47:14', '2024-12-06 22:50:00');
+(18, 3, 4, '4116476156.jpg', 'Beras Kencur', 'Minuman berbahan dasar lengkuas diolah menjadi bubuk minuman herbal instan dan siap dikonsumsi. Komposisi; Lengkuas, Gula.', 20, '35000', '2026-12-06', '2024-12-06 13:45:45', '2025-01-15 15:49:02'),
+(19, 3, 4, '1858941674.jpg', 'Kunyit Kuning', 'Minuman bubuk herbal instan yang diolah dari bahan-bahan pilihan. Komposisi; Kunyit kuning, gula pasir, kayu manis.', 10, '35000', '2026-12-06', '2024-12-06 13:47:14', '2025-01-15 15:49:33'),
+(22, 3, 3, '3195073283.jpg', 'Temulawak', 'Meningkatkan daya tahan tubuh, anti kanker, menangkat bakteri dan virus, anti radang, meraangsang proses metabolisme, meningkatkan fungsi hati, mengeluarkan toksin dalam darah.', 0, '35000', '2026-12-15', '2025-01-15 15:41:32', '2025-01-15 15:56:51'),
+(23, 3, 3, '1736045098.jpg', 'Kunyit putih', '', 0, '35000', '2025-01-15', '2025-01-15 15:53:06', '2025-01-15 15:55:01');
 
 -- --------------------------------------------------------
 
@@ -495,13 +499,6 @@ CREATE TABLE `wishlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `wishlist`
---
-
-INSERT INTO `wishlist` (`id_wishlist`, `id_user`, `id_produk`, `created_at`, `updated_at`) VALUES
-(15, 5, 2, '2025-01-14 20:00:09', '2025-01-14 20:00:09');
-
---
 -- Indexes for dumped tables
 --
 
@@ -659,19 +656,19 @@ ALTER TABLE `kategori_produk`
 -- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id_keranjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id_keranjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT untuk tabel `pembelian`
 --
 ALTER TABLE `pembelian`
-  MODIFY `id_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT untuk tabel `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT untuk tabel `status_pembelian`
@@ -743,7 +740,7 @@ ALTER TABLE `utilities`
 -- AUTO_INCREMENT untuk tabel `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `id_wishlist` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_wishlist` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

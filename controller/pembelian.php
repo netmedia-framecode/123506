@@ -44,37 +44,6 @@
     }
   }
 
-  $wishlist = "SELECT wishlist.*, produk.image_produk, produk.nama_produk, produk.jumlah_produk, produk.harga, produk.tgl_kadaluarsa 
-    FROM wishlist
-    JOIN produk ON wishlist.id_produk = produk.id_produk
-    WHERE wishlist.id_user = '$id_user'
-  ";
-  $view_wishlist = mysqli_query($conn, $wishlist);
-  if (isset($_POST["add_wishlist"])) {
-    $validated_post = array_map(function ($value) use ($conn) {
-      return valid($conn, $value);
-    }, $_POST);
-    if (wishlist($conn, $validated_post, $action = 'insert', $id_user) > 0) {
-      $message = "Produk ditambahkan ke kerangjang anda.";
-      $message_type = "success";
-      alert($message, $message_type);
-      header("Location: wishlist");
-      exit();
-    }
-  }
-  if (isset($_POST["delete_wishlist"])) {
-    $validated_post = array_map(function ($value) use ($conn) {
-      return valid($conn, $value);
-    }, $_POST);
-    if (wishlist($conn, $validated_post, $action = 'delete', $id_user) > 0) {
-      $message = "Produk " . $_POST['nama_produk'] . " berhasil dihapus dari wishlist anda.";
-      $message_type = "success";
-      alert($message, $message_type);
-      header("Location: wishlist");
-      exit();
-    }
-  }
-
   if($id_role <= 2){
     $tagihan = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
       FROM pembelian

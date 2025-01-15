@@ -2,7 +2,7 @@
 // Informasi koneksi ke database
 $servername = "localhost"; // Nama server database (biasanya localhost)
 $username = "root"; // Nama pengguna database
-$password = "Netmedia040700_"; // Kata sandi database
+$password = ""; // Kata sandi database
 $database = "cv_aquila_indonesia"; // Nama database yang ingin Anda hubungkan
 
 // Membuat koneksi

@@ -84,20 +84,6 @@ require_once("templates/top.php"); ?>
                             <?php }?>
                           </form>
                         </div>
-                        <div class="product-action product-action-1 p-abs">
-                          <form action="" method="post">
-                            <input type="hidden" name="id_produk" value="<?= $data_1['id_produk']?>">
-                            <input type="hidden" name="harga" value="<?= $data_1['harga']?>">
-                            <input type="hidden" name="jumlah_keranjang" value="1">
-                            <?php if(isset($_SESSION["project_cv_aquila_indonesia"]["users"])){?>
-                            <button type="submit" name="add_wishlist" class="icon-box icon-box-1"><i
-                                class="fal fa-heart"></i><i class="fal fa-heart"></i></button>
-                            <?php }else{?>
-                            <button type="button" onclick="window.location.href='auth/'" class="icon-box icon-box-1"><i
-                                class="fal fa-heart"></i><i class="fal fa-heart"></i></button>
-                            <?php }?>
-                          </form>
-                        </div>
                       </div>
                       <div class="product-content">
                         <h4 class="pro-title pro-title-1"><a
@@ -176,8 +162,6 @@ require_once("templates/top.php"); ?>
                               <?php if(isset($_SESSION["project_cv_aquila_indonesia"]["users"])){?>
                               <button type="submit" name="add_keranjang" class="puik-cart-btn"><i
                                   class="bi bi-cart3"></i> Keranjang</button>
-                              <button type="submit" name="add_wishlist" class="puik-proudct-btn-boxed"><i
-                                  class="fal fa-heart"></i></button>
                               <?php }else{?>
                               <button type="button" onclick="window.location.href='auth/'" class="puik-cart-btn"><i
                                   class="bi bi-cart3"></i> Keranjang</button>

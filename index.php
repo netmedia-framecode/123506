@@ -70,10 +70,7 @@ require_once("templates/top.php"); ?>
                   <input type="hidden" name="id_produk" value="<?= $data['id_produk']?>">
                   <input type="hidden" name="harga" value="<?= $data['harga']?>">
                   <input type="hidden" name="jumlah_keranjang" value="1">
-                  <?php if(isset($_SESSION["project_cv_aquila_indonesia"]["users"])){?>
-                  <button type="submit" name="add_wishlist" class="icon-box icon-box-1"><i class="fal fa-heart"></i><i
-                      class="fal fa-heart"></i></button>
-                  <?php }else{?>
+                  <?php if(!isset($_SESSION["project_cv_aquila_indonesia"]["users"])){?>
                   <button type="button" onclick="window.location.href='auth/'" class="icon-box icon-box-1"><i
                       class="fal fa-heart"></i><i class="fal fa-heart"></i></button>
                   <?php }?>

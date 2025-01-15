@@ -31,9 +31,6 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
 
   require_once("config/Auth.php");
 
-  $pull_wishlist = "SELECT * FROM wishlist WHERE id_user='$id_user'";
-  $store_wishlist = mysqli_query($conn, $pull_wishlist);
-  $count_wishlist = mysqli_num_rows($store_wishlist);
   $pull_keranjang = "SELECT * FROM keranjang WHERE id_user='$id_user'";
   $store_keranjang = mysqli_query($conn, $pull_keranjang);
   $count_keranjang = mysqli_num_rows($store_keranjang);
@@ -58,18 +55,6 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
       }else{
         header("Location: produk");
       }
-      exit();
-    }
-  }
-  if (isset($_POST["add_wishlist"])) {
-    $validated_post = array_map(function ($value) use ($conn) {
-      return valid($conn, $value);
-    }, $_POST);
-    if (wishlist($conn, $validated_post, $action = 'insert', $id_user) > 0) {
-      $message = "Produk ditambahkan ke kerangjang anda.";
-      $message_type = "success";
-      alert($message, $message_type);
-      header("Location: produk");
       exit();
     }
   }

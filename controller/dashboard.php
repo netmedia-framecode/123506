@@ -48,18 +48,6 @@ if($id_role<=2){
   ";
 }
 $view_produk = mysqli_query($conn, $produk);
-if (isset($_POST["add_wishlist"])) {
-  // $validated_post = array_map(function ($value) use ($conn) {
-  //   return valid($conn, $value);
-  // }, $_POST);
-  if (wishlist($conn, $_POST, $action = 'insert', $id_user) > 0) {
-    $message = "Produk ditambahkan ke kerangjang anda.";
-    $message_type = "success";
-    alert($message, $message_type);
-    header("Location: pembelian/wishlist");
-    exit();
-  }
-}
 if (isset($_POST["add_keranjang"])) {
   // $validated_post = array_map(function ($value) use ($conn) {
   //   return valid($conn, $value);

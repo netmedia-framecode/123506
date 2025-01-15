@@ -110,21 +110,6 @@ if(!isset($_GET['p'])){
                 </div>
               </form>
             </div>
-            <?php if(isset($_SESSION["project_cv_aquila_indonesia"]["users"])){?>
-            <div class="product__details-compare">
-              <ul>
-                <li>
-                  <form action="" method="post">
-                    <input type="hidden" name="id_produk" value="<?= $data['id_produk']?>">
-                    <input type="hidden" name="harga" value="<?= $data['harga']?>">
-                    <input type="hidden" name="jumlah_keranjang" value="1">
-                    <button type="submit" name="add_wishlist" class="btn btn-link" style="text-decoration: none;"><i
-                        class="fal fa-heart me-2"></i>Add to Wishlist</button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-            <?php }?>
             <div class="product__details-meta mb-25">
               <ul>
                 <li>

@@ -1482,29 +1482,6 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     return mysqli_affected_rows($conn);
   }
 
-  function wishlist($conn, $data, $action, $id_user)
-  {
-    if ($action == "insert") {
-      $id_produk_array = isset($data['id_produk']) && is_array($data['id_produk']) ? $data['id_produk'] : [];
-      $jumlah_keranjang_array = isset($data['jumlah_keranjang']) && is_array($data['jumlah_keranjang']) ? $data['jumlah_keranjang'] : [];
-      $harga_array = isset($data['harga']) && is_array($data['harga']) ? $data['harga'] : [];
-      if (count($id_produk_array) == count($jumlah_keranjang_array) && count($jumlah_keranjang_array) == count($harga_array)) {
-        for ($i = 0; $i < count($id_produk_array); $i++) {
-          $id_produk = $id_produk_array[$i];
-          $sql_insert = "INSERT INTO wishlist (id_user,id_produk) VALUES ('$id_user','$id_produk')";
-          mysqli_query($conn, $sql_insert);
-        }
-      }
-    }
-
-    if ($action == "delete") {
-      $sql_delete = "DELETE FROM wishlist WHERE id_wishlist = '$data[id_wishlist]'";
-      mysqli_query($conn, $sql_delete);
-    }
-
-    return mysqli_affected_rows($conn);
-  }
-
   function tagihan($conn, $data, $action, $id_user)
   {
     if ($action == "insert") {

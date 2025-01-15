@@ -139,17 +139,6 @@ CREATE TABLE
   );
 
 CREATE TABLE
-  wishlist (
-    id_wishlist INT AUTO_INCREMENT PRIMARY KEY,
-    id_user INT,
-    id_produk INT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_user) REFERENCES users (id_user) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (id_produk) REFERENCES produk (id_produk) ON UPDATE CASCADE ON DELETE CASCADE
-  );
-
-CREATE TABLE
   status_pembelian (
     id_status_pembelian INT AUTO_INCREMENT PRIMARY KEY,
     status_pembelian VARCHAR(50)
