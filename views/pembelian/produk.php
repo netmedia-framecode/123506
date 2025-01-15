@@ -51,7 +51,6 @@ require_once("../../templates/views_top.php"); ?>
               <input type="hidden" name="id_produk[]" value="<?= $data['id_produk']?>">
               <input type="hidden" name="harga[]" value="<?= $data['harga']?>">
               <input type="hidden" name="id_keranjang_all[]" value="0">
-              <button type="submit" name="add_wishlist" class="btn btn-primary"><i class="bi bi-heart"></i></button>
               <button type="submit" name="add_keranjang" class="btn btn-primary" style="margin-left: 5px;"><i class="bi bi-cart3"></i></button>
               <button type="submit" name="add_tagihan" class="btn btn-success" style="margin-left: 5px;"><i class="bi bi-bag me-2"></i>Beli</button>
             </div>

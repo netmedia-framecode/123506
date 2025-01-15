@@ -243,7 +243,6 @@ require_once("../templates/views_top.php"); ?>
               <input type="hidden" name="id_produk[]" value="<?= $data['id_produk']?>">
               <input type="hidden" name="harga[]" value="<?= $data['harga']?>">
               <input type="hidden" name="id_keranjang_all[]" value="0">
-              <button type="submit" name="add_wishlist" class="btn btn-primary"><i class="bi bi-heart"></i></button>
               <button type="submit" name="add_keranjang" class="btn btn-primary" style="margin-left: 5px;"><i
                   class="bi bi-cart3"></i></button>
               <button type="submit" name="add_tagihan" class="btn btn-success" style="margin-left: 5px;"><i
@@ -279,7 +278,6 @@ require_once("../templates/views_top.php"); ?>
                 <div class="dropdown-menu dropdown-menu-end">
                   <?php if($id_role==1 || $id_role==3){?>
                   <a href="pembelian/keranjang" class="dropdown-item"><i class="bi bi-basket"></i>Keranjang</a>
-                  <a href="pembelian/wishlist" class="dropdown-item"><i class="bi bi-heart"></i>Wishlist</a>
                   <?php }?>
                   <a href="pembelian/tagihan" class="dropdown-item"><i class="bi bi-receipt"></i>Tagihan</a>
                   <a href="pembelian/list-pembelian" class="dropdown-item"><i class="bi bi-bag-check"></i>List
