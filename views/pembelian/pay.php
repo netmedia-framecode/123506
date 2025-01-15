@@ -45,7 +45,7 @@ if(!isset($_SESSION['detail_pembelian'])){
   $view_pembelian = mysqli_query($conn, $pembelian);
  ?>
 
-<div class="nxl-content">
+<div class="nxl-content" style="height: 110vh;">
 
   <!-- [ page-header ] start -->
   <div class="page-header">
