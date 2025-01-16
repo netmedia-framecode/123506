@@ -141,8 +141,8 @@
     // $validated_post = array_map(function ($value) use ($conn) {
     //   return valid($conn, $value);
     // }, $_POST);
-    if (tagihan($conn, $_POST, $action = 'insert', $id_user) > 0) {
-      $message = "Produk ditambahkan ke kerangjang anda.";
+    if (tagihan($conn, $_POST, $action = 'insert_one', $id_user) > 0) {
+      $message = "Produk berhasil ditambahkan ke tagihan anda.";
       $message_type = "success";
       alert($message, $message_type);
       header("Location: ".$baseURL."views/pembelian/tagihan");

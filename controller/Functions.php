@@ -1475,7 +1475,7 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
     }
 
     if ($action == "delete") {
-      $sql_delete = "DELETE FROM keranjang WHERE id_keranjang = '$data[id_keranjang]'";
+      $sql_delete = "DELETE FROM keranjang WHERE id_keranjang = '$data[id_cart]'";
       mysqli_query($conn, $sql_delete);
     }
 
@@ -1485,6 +1485,27 @@ if (isset($_SESSION["project_cv_aquila_indonesia"]["users"])) {
   function tagihan($conn, $data, $action, $id_user)
   {
     if ($action == "insert") {
+      $order_id = generateOrderID(6);
+      $token = generateTokenTagihan(12);
+      $id_keranjang_all_array = isset($data['id_keranjang']) && is_array($data['id_keranjang']) ? $data['id_keranjang'] : [];
+      foreach ($id_keranjang_all_array as $id_keranjang) {
+        $query_keranjang = "SELECT keranjang.id_produk, keranjang.jumlah_keranjang, produk.harga FROM keranjang JOIN produk ON keranjang.id_produk = produk.id_produk WHERE keranjang.id_keranjang = '$id_keranjang'";
+        $result_keranjang = mysqli_query($conn, $query_keranjang);
+        if ($result_keranjang && mysqli_num_rows($result_keranjang) > 0) {
+          $row_keranjang = mysqli_fetch_assoc($result_keranjang);
+          $id_produk = $row_keranjang['id_produk'];
+          $jumlah_keranjang = $row_keranjang['jumlah_keranjang'];
+          $harga_satuan = $row_keranjang['harga'];
+          $sql_pembelian = "INSERT INTO pembelian (id_user, id_produk, order_id, token, jumlah_produk, harga_satuan) 
+                                VALUES ('$id_user', '$id_produk', '$order_id', '$token', '$jumlah_keranjang', '$harga_satuan')";
+          mysqli_query($conn, $sql_pembelian);
+          $sql_hapus_keranjang = "DELETE FROM keranjang WHERE id_keranjang = '$id_keranjang'";
+          mysqli_query($conn, $sql_hapus_keranjang);
+        }
+      }
+    }
+
+    if ($action == "insert_one") {
       $order_id = generateOrderID(6);
       $token = generateTokenTagihan(12);
       $id_keranjang_all_array = isset($data['id_keranjang_all']) && is_array($data['id_keranjang_all']) ? $data['id_keranjang_all'] : [];

@@ -51,10 +51,8 @@ require_once("../../templates/views_top.php"); ?>
             <div class="row g-0">
               <div class="col-md-4 d-flex">
                 <div class="form-check my-auto" style="margin-left: 20px;">
-                  <input class="form-check-input shadow" name="id_produk[]" type="checkbox" style="font-size: 20px;"
-                    value="<?= $data['id_produk']?>" data-harga="<?= $data['harga'] ?>">
-                  <input type="hidden" name="harga[]" value="<?= $data['harga']?>">
-                  <input type="hidden" name="id_keranjang_all[]" value="<?= $data['id_keranjang']?>">
+                  <input class="form-check-input shadow" name="id_keranjang[]" type="checkbox" style="font-size: 20px;"
+                    value="<?= $data['id_keranjang']?>" data-idKeranjang="<?= $data['id_keranjang'] ?>" data-harga="<?= $data['harga'] ?>">
                 </div>
                 <img src="../../assets/img/produk/<?= $data['image_produk']?>"
                   style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;" class="img-fluid p-3"
@@ -94,8 +92,8 @@ require_once("../../templates/views_top.php"); ?>
                       style="width: 90px;" required>
                   </div>
                   <div class="mb-3">
-                    <input type="hidden" name="id_keranjang" value="<?= $data['id_keranjang']?>">
-                    <input type="hidden" name="nama_produk" value="<?= $data['nama_produk']?>">
+                    <input type="hidden" name="id_cart" value="<?= $data['id_keranjang']?>">
+                    <input type="hidden" name="nama_produk[]" value="<?= $data['nama_produk']?>">
                     <button type="submit" name="delete_keranjang" class="btn btn-danger"
                       style="margin-left: -10px; margin-top: 30px;"><i class="bi bi-trash"></i></button>
                   </div>

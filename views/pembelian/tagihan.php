@@ -105,6 +105,7 @@ require_once("../../templates/views_top.php"); ?>
                         <form action="" method="post" class="d-flex">
                           <input type="hidden" name="id_pembelian" value="<?= $data['id_pembelian'] ?>">
                           <input type="hidden" name="nama_produk" value="<?= $data['nama_produk'] ?>">
+                          <input type="hidden" name="jumlah_produk" value="<?= $data['jumlah_produk'] ?>">
                           <button type="submit" name="delete_tagihan" class="btn btn-danger btn-sm">
                             <i class="bi bi-trash"></i>
                           </button>

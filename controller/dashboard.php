@@ -33,13 +33,13 @@ $pull_expire = "SELECT * FROM pembelian WHERE id_status_pembelian='5'";
 $store_expire = mysqli_query($conn, $pull_expire);
 $count_expire = mysqli_num_rows($store_expire);
 
-if($id_role<=2){
+if ($id_role <= 2) {
   $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
     FROM produk
     JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
     JOIN status_produk ON produk.id_status_produk = status_produk.id_status_produk
   ";
-}else if($id_role==3){
+} else if ($id_role == 3) {
   $produk = "SELECT produk.*, kategori_produk.kategori_produk, status_produk.status_produk
     FROM produk
     JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
@@ -53,7 +53,7 @@ if (isset($_POST["add_keranjang"])) {
   //   return valid($conn, $value);
   // }, $_POST);
   if (keranjang($conn, $_POST, $action = 'insert', $id_user) > 0) {
-    $message = "Produk ditambahkan ke kerangjang anda.";
+    $message = "Produk " . $_POST['nama_produk'] . " ditambahkan ke keranjang anda.";
     $message_type = "success";
     alert($message, $message_type);
     header("Location: pembelian/keranjang");
@@ -64,8 +64,8 @@ if (isset($_POST["add_tagihan"])) {
   // $validated_post = array_map(function ($value) use ($conn) {
   //   return valid($conn, $value);
   // }, $_POST);
-  if (tagihan($conn, $_POST, $action = 'insert', $id_user) > 0) {
-    $message = "Produk ditambahkan ke kerangjang anda.";
+  if (tagihan($conn, $_POST, $action = 'insert_one', $id_user) > 0) {
+    $message = "Produk berhasil ditambahkan ke tagihan anda.";
     $message_type = "success";
     alert($message, $message_type);
     header("Location: pembelian/tagihan");
@@ -73,7 +73,7 @@ if (isset($_POST["add_tagihan"])) {
   }
 }
 
-if($id_role <= 2){
+if ($id_role <= 2) {
   $list_pembelian = "SELECT pembelian.*, users.image, users.name, users.email, users.tlpn, users.alamat, produk.image_produk, produk.nama_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
     FROM pembelian
     JOIN users ON pembelian.id_user = users.id_user
@@ -81,7 +81,7 @@ if($id_role <= 2){
     JOIN kategori_produk ON produk.id_kategori_produk = kategori_produk.id_kategori_produk
     JOIN status_pembelian ON pembelian.id_status_pembelian = status_pembelian.id_status_pembelian
   ";
-}else if($id_role == 3){
+} else if ($id_role == 3) {
   $list_pembelian = "SELECT pembelian.*, produk.image_produk, produk.nama_produk, produk.jumlah_produk, produk.harga, status_pembelian.status_pembelian, kategori_produk.kategori_produk
     FROM pembelian
     JOIN produk ON pembelian.id_produk = produk.id_produk

@@ -20,26 +20,26 @@
 <script src="<?= $baseURL ?>assets/js/demo/datatables-demo.js"></script>
 
 <script>
-const showMessage = (type, title, message) => {
-  if (message) {
-    Swal.fire({
-      icon: type,
-      title: title,
-      text: message,
-    });
-  }
-};
+  const showMessage = (type, message) => {
+    if (message) {
+      Swal.fire({
+        icon: type,
+        title: message, // Pesan ditampilkan di title
+      });
+    }
+  };
 
-showMessage("success", "Berhasil Terkirim", $(".message-success").data("message-success"));
-showMessage("success", "Berhasil Dihapus", $(".message-success-delete").data("message-success-delete"));
-showMessage("info", "For your information", $(".message-info").data("message-info"));
-showMessage("warning", "Peringatan!!", $(".message-warning").data("message-warning"));
-showMessage("error", "Kesalahan", $(".message-danger").data("message-danger"));
+  // Contoh penggunaan berdasarkan data-* attribute:
+  showMessage("success", $(".message-success").data("message-success"));
+  showMessage("success", $(".message-success-delete").data("message-success-delete"));
+  showMessage("info", $(".message-info").data("message-info"));
+  showMessage("warning", $(".message-warning").data("message-warning"));
+  showMessage("error", $(".message-danger").data("message-danger"));
 </script>
 
 <script>
-$('.custom-file-input').on('change', function() {
-  let fileName = $(this).val().split('\\').pop();
-  $(this).next('.custom-file-label').addClass("selected").html(fileName);
-});
+  $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });
 </script>
