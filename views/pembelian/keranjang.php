@@ -93,7 +93,7 @@ require_once("../../templates/views_top.php"); ?>
                   </div>
                   <div class="mb-3">
                     <input type="hidden" name="id_cart" value="<?= $data['id_keranjang']?>">
-                    <input type="hidden" name="nama_produk[]" value="<?= $data['nama_produk']?>">
+                    <input type="hidden" name="nama_produk" value="<?= $data['nama_produk']?>">
                     <button type="submit" name="delete_keranjang" class="btn btn-danger"
                       style="margin-left: -10px; margin-top: 30px;"><i class="bi bi-trash"></i></button>
                   </div>
